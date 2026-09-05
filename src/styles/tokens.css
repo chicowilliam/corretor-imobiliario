@@ -1,0 +1,26 @@
+:root {
+  --ivory: #f5f3ec;
+  --paper: #ebe8df;
+  --charcoal: #252722;
+  --ink: #282b25;
+  --olive: #5b634c;
+  --olive-dark: #454c3a;
+  --stone: #777366;
+  --muted: #686a61;
+  --line: #d6d6ca;
+  --gutter: clamp(1.25rem, 5.2vw, 6rem);
+  --section-space: clamp(4.5rem, 8vw, 8.5rem);
+}
+
+@theme inline {
+  --color-ivory: var(--ivory);
+  --color-paper: var(--paper);
+  --color-charcoal: var(--charcoal);
+  --color-ink: var(--ink);
+  --color-olive: var(--olive);
+  --color-stone: var(--stone);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --font-sans: var(--font-interface);
+  --font-serif: var(--font-editorial);
+}

@@ -1,0 +1,81 @@
+import type { Property } from "@/types/property";
+import type { ImageAsset } from "@/types/shared";
+import { media } from "./media";
+
+// All prices are integer BRL cents. No real addresses, listings or contacts.
+const timestamp = "2026-09-01T12:00:00.000Z";
+type PropertyInput = Pick<Property, "id" | "reference" | "slug" | "title" | "excerpt" | "type" | "purpose" | "price" | "neighborhood" | "areaId" | "area" | "bedrooms" | "suites" | "bathrooms" | "parking"> & Partial<Property> & { cover: ImageAsset };
+
+function property({ cover, ...input }: PropertyInput): Property {
+  return {
+    description: input.excerpt,
+    status: "PUBLISHED", highlights: [], collection: "PUBLIC",
+    previousPrice: null, currency: "BRL", priceVisibility: "PUBLIC",
+    pricePeriod: input.purpose === "RENT" ? "MONTH" : "TOTAL",
+    condominiumFee: null, propertyTax: null, propertyTaxPeriod: null,
+    city: "São Paulo",
+    address: { street: null, number: null, complement: null, postalCode: null, state: "SP", countryCode: "BR", visibility: "NEIGHBORHOOD" },
+    lat: null, lng: null, areaKind: input.type === "HOUSE" ? "BUILT" : "PRIVATE", lotArea: null,
+    features: [],
+    media: { cover, gallery: [cover], video: null, floorPlans: [], virtualTourUrl: null },
+    agentId: "agent-tomas", developmentId: null,
+    seo: { title: `${input.title} — Tomás Avelar`, description: input.excerpt, socialImage: cover, noIndex: true },
+    publishedAt: timestamp, createdAt: timestamp, updatedAt: timestamp,
+    ...input,
+  };
+}
+
+export const properties: Property[] = [
+  property({
+    id: "property-jardim", reference: "TA-001", slug: "casa-entre-jardins", title: "Casa entre jardins",
+    excerpt: "O verde entra, a cidade desacelera. Uma casa que faz da luz natural o seu melhor projeto.",
+    description: "Ambientes que se abrem para um jardim maduro, materiais que envelhecem bem e espaço para viver sem pressa. A sala integra estar, leitura e refeições, enquanto a ala íntima preserva o silêncio. Uma interpretação contemporânea do morar nos Jardins.",
+    type: "HOUSE", purpose: "SALE", price: 890_000_000, neighborhood: "Jardim Europa", areaId: "area-jardins",
+    area: 420, lotArea: 680, bedrooms: 4, suites: 4, bathrooms: 6, parking: 4,
+    status: "EXCLUSIVE", highlights: ["EXCLUSIVE"], cover: media.interior,
+    features: [{ id: "garden", label: "Jardim privativo", category: "OUTDOOR" }, { id: "natural-light", label: "Luz natural", category: "INTERIOR" }],
+  }),
+  property({
+    id: "property-horizonte", reference: "TA-002", slug: "horizonte-jardins", title: "Um novo ponto de vista",
+    excerpt: "Ambientes integrados, luz generosa e espaço para viver a cidade em outro ritmo.",
+    type: "APARTMENT", purpose: "SALE", price: 485_000_000, neighborhood: "Jardins", areaId: "area-jardins",
+    area: 238, bedrooms: 3, suites: 3, bathrooms: 4, parking: 3,
+    status: "JUST_LISTED", highlights: ["JUST_LISTED"], cover: media.apartment,
+    condominiumFee: 380_000,
+    features: [{ id: "open-plan", label: "Planta integrada", category: "INTERIOR" }],
+  }),
+  property({
+    id: "property-patio", reference: "TA-003", slug: "casa-patio", title: "A vida ao redor do pátio",
+    excerpt: "Uma casa reservada, desenhada para que o lado de fora faça parte de todos os dias.",
+    type: "HOUSE", purpose: "SALE", price: 620_000_000, previousPrice: 680_000_000,
+    neighborhood: "Alto de Pinheiros", areaId: "area-pinheiros", area: 360, lotArea: 510,
+    bedrooms: 4, suites: 3, bathrooms: 5, parking: 3,
+    status: "PRICE_REDUCED", highlights: ["PRICE_REDUCED"], cover: media.courtyard,
+    features: [{ id: "pool", label: "Piscina", category: "OUTDOOR" }, { id: "garden", label: "Jardim privativo", category: "OUTDOOR" }],
+  }),
+  property({
+    id: "property-loft", reference: "TA-004", slug: "loft-vila", title: "Texturas de uma vida urbana",
+    excerpt: "Madeira, luz natural e o bairro acontecendo logo ali.",
+    type: "APARTMENT", purpose: "RENT", price: 1_250_000, neighborhood: "Vila Madalena", areaId: "area-vila",
+    area: 112, bedrooms: 2, suites: 1, bathrooms: 2, parking: 1,
+    status: "JUST_LISTED", highlights: ["JUST_LISTED"], cover: media.loft, condominiumFee: 130_000,
+    features: [{ id: "open-plan", label: "Planta integrada", category: "INTERIOR" }],
+  }),
+  property({
+    id: "property-terraco", reference: "TA-005", slug: "terraco-itaim", title: "Um jardim sobre a cidade",
+    excerpt: "Um terraço para cultivar o tempo livre, com a conveniência do Itaim aos seus pés.",
+    type: "PENTHOUSE", purpose: "RENT", price: 2_800_000, neighborhood: "Itaim Bibi", areaId: "area-itaim",
+    area: 285, bedrooms: 3, suites: 3, bathrooms: 4, parking: 3,
+    highlights: ["EXCLUSIVE"], cover: media.terrace, condominiumFee: 420_000,
+    features: [{ id: "terrace", label: "Terraço privativo", category: "OUTDOOR" }],
+  }),
+  property({
+    id: "property-reserva", reference: "TA-006", slug: "casa-reserva", title: "Entre o concreto e a natureza",
+    excerpt: "Arquitetura horizontal, madeira e um jardim que guarda o seu próprio ritmo.",
+    type: "HOUSE", purpose: "SALE", price: null, priceVisibility: "ON_REQUEST", collection: "PRIVATE",
+    neighborhood: "Alto de Pinheiros", areaId: "area-pinheiros", area: 580, lotArea: 920,
+    bedrooms: 4, suites: 4, bathrooms: 6, parking: 5,
+    status: "EXCLUSIVE", highlights: ["EXCLUSIVE"], cover: media.hero,
+    features: [{ id: "garden", label: "Jardim privativo", category: "OUTDOOR" }, { id: "reflecting-pool", label: "Espelho d’água", category: "OUTDOOR" }],
+  }),
+];

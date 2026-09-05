@@ -1,0 +1,7 @@
+import Image from "next/image";
+import type { Property } from "@/types/property";
+import { PropertyPreview } from "@/components/property/PropertyPreview";
+
+export function PrivateCollectionPreview({ property, whatsapp }: { property: Property; whatsapp: string | null }) {
+  return <section id="colecao-privada" className="shell pb-8" aria-labelledby="private-heading"><div className="private-layout on-dark"><Image src={property.media.cover.src} alt={property.media.cover.alt} fill sizes="90vw" className="object-cover object-center" /><div className="private-shade" /><div className="private-content"><span className="eyebrow mb-5">Coleção privada</span><h2 id="private-heading" className="display text-[48px] md:text-[60px]">Alguns encontros<br />pedem <em>discrição.</em></h2><p className="mt-6 max-w-xs text-xs leading-7 text-[#e6e7dc]">Uma seleção reservada, apresentada em uma conversa pessoal. O próximo lugar pode estar aqui.</p><PropertyPreview property={property} whatsapp={whatsapp} className="text-link mt-6">Conhecer a coleção</PropertyPreview></div></div></section>;
+}

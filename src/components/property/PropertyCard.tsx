@@ -1,16 +1,17 @@
-import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import type { Property } from "@/types/property";
 import { PropertyPreview } from "./PropertyPreview";
 import { propertyPrice } from "@/lib/utils/format-money";
+import { PropertyCardMotion } from "./PropertyCardMotion";
+import { PropertyCardMedia } from "./PropertyCardMedia";
 
 const labels = { JUST_LISTED: "Novo na seleção", EXCLUSIVE: "Exclusividade", PRICE_REDUCED: "Novo valor" };
 
 export function PropertyCard({ property, whatsapp }: { property: Property; whatsapp: string | null }) {
   const highlight = property.highlights[0];
-  return <article>
+  return <PropertyCardMotion>
     <PropertyPreview property={property} whatsapp={whatsapp} className="property-image" showArrow={false}>
-      <Image src={property.media.cover.src} alt={property.media.cover.alt} fill sizes="(max-width: 767px) 90vw, (max-width: 1600px) 30vw, 450px" />
+      <PropertyCardMedia imageSrc={property.media.cover.src} imageAlt={property.media.cover.alt} objectPosition={property.media.card?.objectPosition} videoSrc={property.media.card?.video?.src} />
       {highlight ? <span className="property-badge">{labels[highlight]}</span> : null}
       <span className="image-arrow"><ArrowUpRight size={18} strokeWidth={1.3} aria-hidden="true" /></span>
     </PropertyPreview>
@@ -18,5 +19,5 @@ export function PropertyCard({ property, whatsapp }: { property: Property; whats
     <h3 className="property-card-title">{property.title}</h3>
     <div className="fact-row"><span>{property.area} m²</span><span>{property.suites} {property.suites === 1 ? "suíte" : "suítes"}</span><span>{property.parking} {property.parking === 1 ? "vaga" : "vagas"}</span></div>
     <p className="mt-5 border-t border-line pt-4 text-[13px] font-medium">{propertyPrice(property)}</p>
-  </article>;
+  </PropertyCardMotion>;
 }

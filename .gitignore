@@ -6,3 +6,5 @@ out/
 *.tsbuildinfo
 artifacts/
 next-env.d.ts
+**/__pycache__/
+*.pyc

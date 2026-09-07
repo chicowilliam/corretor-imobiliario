@@ -22,6 +22,7 @@ export interface PropertyFeature {
 }
 
 export interface PropertyMedia {
+  card?: { objectPosition: string; video: VideoAsset | null };
   cover: ImageAsset;
   gallery: ImageAsset[];
   video: VideoAsset | null;

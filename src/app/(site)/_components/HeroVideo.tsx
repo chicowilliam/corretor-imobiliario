@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Pause, Play } from "lucide-react";
 
 type ConnectionNavigator = Navigator & { connection?: { saveData?: boolean } };
 
-export function HeroVideo({ src, poster }: { src: string; poster: string }) {
+export function HeroVideo({ src, poster, objectPosition, children }: { src: string; poster: string; objectPosition?: string; children: ReactNode }) {
   const ref = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
   const [ready, setReady] = useState(false);
@@ -36,7 +36,10 @@ export function HeroVideo({ src, poster }: { src: string; poster: string }) {
   }, [src]);
 
   return <>
-    <video ref={ref} className="hero-video" data-playing={ready && !failed && !reduced} poster={poster} muted loop playsInline preload="none" aria-hidden="true" onPlaying={() => { setReady(true); setPlaying(true); }} onPause={() => setPlaying(false)} onError={() => { setFailed(true); setPlaying(false); }} />
+    <div className="hero-media" data-hero-media>
+      {children}
+      <video ref={ref} className="hero-video" style={{ objectPosition }} data-playing={ready && !failed && !reduced} poster={poster} muted loop playsInline preload="none" aria-hidden="true" onPlaying={() => { setReady(true); setPlaying(true); }} onPause={() => setPlaying(false)} onError={() => { setFailed(true); setPlaying(false); }} />
+    </div>
     {!reduced && !failed ? <div className="absolute inset-x-0 bottom-8 z-10 pointer-events-none"><div className="shell flex justify-end"><button type="button" className="video-toggle pointer-events-auto" onClick={() => {
       if (!ref.current) return;
       if (playing) { pausedByUser.current = true; ref.current.pause(); }

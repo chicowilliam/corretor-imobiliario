@@ -26,10 +26,10 @@ export function ContactPanel({ message, whatsapp = null }: { message: string; wh
   </div>;
 }
 
-export function ContactCTA({ children, message, title = "Vamos conversar", className = "text-link", whatsapp = null }: { children: ReactNode; message: string; title?: string; className?: string; whatsapp?: string | null }) {
+export function ContactCTA({ children, message, title = "Vamos conversar", className = "text-link", whatsapp = null, icon = <ArrowUpRight size={16} aria-hidden="true" /> }: { children: ReactNode; message: string; title?: string; className?: string; whatsapp?: string | null; icon?: ReactNode }) {
   const [open, setOpen] = useState(false);
   return <>
-    <button type="button" className={className} onClick={() => setOpen(true)}>{children}<ArrowUpRight size={16} aria-hidden="true" /></button>
+    <button type="button" className={className} onClick={() => setOpen(true)}>{children}{icon}</button>
     <Dialog open={open} onClose={() => setOpen(false)} title={title}>
       <div className="dialog-inner pt-16">
         <span className="eyebrow text-olive">Atendimento pessoal</span>

@@ -4,6 +4,7 @@ import { media } from "./media";
 
 // All prices are integer BRL cents. No real addresses, listings or contacts.
 const timestamp = "2026-09-01T12:00:00.000Z";
+const cardFocalPoints: Record<string, string> = { interior: "50% 55%", apartment: "50% 58%", courtyard: "50% 45%", loft: "55% 50%", terrace: "50% 55%", hero: "50% 60%" };
 type PropertyInput = Pick<Property, "id" | "reference" | "slug" | "title" | "excerpt" | "type" | "purpose" | "price" | "neighborhood" | "areaId" | "area" | "bedrooms" | "suites" | "bathrooms" | "parking"> & Partial<Property> & { cover: ImageAsset };
 
 function property({ cover, ...input }: PropertyInput): Property {
@@ -17,7 +18,7 @@ function property({ cover, ...input }: PropertyInput): Property {
     address: { street: null, number: null, complement: null, postalCode: null, state: "SP", countryCode: "BR", visibility: "NEIGHBORHOOD" },
     lat: null, lng: null, areaKind: input.type === "HOUSE" ? "BUILT" : "PRIVATE", lotArea: null,
     features: [],
-    media: { cover, gallery: [cover], video: null, floorPlans: [], virtualTourUrl: null },
+    media: { cover, card: { objectPosition: cardFocalPoints[cover.id] ?? "center", video: null }, gallery: [cover], video: null, floorPlans: [], virtualTourUrl: null },
     agentId: "agent-tomas", developmentId: null,
     seo: { title: `${input.title} — Tomás Avelar`, description: input.excerpt, socialImage: cover, noIndex: true },
     publishedAt: timestamp, createdAt: timestamp, updatedAt: timestamp,

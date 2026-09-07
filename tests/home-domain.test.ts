@@ -20,6 +20,11 @@ test("Home search intersects purpose, area and property type", () => {
   assert.deepEqual(filterHomeProperties(items, { purpose: "RENT", areaId: "jardins" }), []);
 });
 
+test("Catalog filters reuse the same public listing rules", () => {
+  assert.deepEqual(filterHomeProperties(items, { purpose: "SALE" }).map((item) => item.id), ["sale"]);
+  assert.equal(filterHomeProperties(items, { type: "HOUSE" }).every((item) => item.collection === "PUBLIC"), true);
+});
+
 test("Sold, archived and off-market properties are not active Home listings", () => {
   for (const status of ["SOLD", "RENTED", "ARCHIVED", "OFF_MARKET", "COMING_SOON"] as const) {
     assert.equal(isPublicListing({ ...items[0], status }), false);

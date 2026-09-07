@@ -9,7 +9,9 @@ npm install
 npm run dev
 ```
 
-Abra http://localhost:3000.
+Abra **http://127.0.0.1:3000** (no Windows, prefira esse endereço a `localhost`).
+
+A primeira compilação pode levar cerca de 1 minuto neste ambiente (o Next avisa “Slow filesystem”). As recargas seguintes ficam bem mais rápidas. Se a porta 3000 estiver ocupada, encerre o processo antigo antes de subir o `dev` de novo.
 
 ## Verificar
 
@@ -36,6 +38,6 @@ Os imóveis, valores, perfil, métricas e depoimentos são fictícios. Nenhum CR
 
 Os contatos estão nulos de propósito. As ações de conversa abrem uma mensagem editável e copiável; não enviam leads nem dados pessoais. Para configurar um WhatsApp real posteriormente, altere o campo `whatsapp` do Agent, usando o código de país 55.
 
-## Limite desta entrega
+## Entrega atual
 
-Somente a Home. A busca filtra sua seleção local e os imóveis abrem uma prévia na mesma página. O catálogo e as demais fases ainda não foram construídos.
+Home e catálogo em `/imoveis`. A busca da Home filtra a seleção curada; o catálogo lista todos os imóveis públicos com os mesmos filtros. Pré-visualizações abrem na própria página. Páginas individuais e demais fases ainda não foram construídas.

@@ -1,0 +1,35 @@
+/* The document remains visible until the opening controller is ready. */
+.hero-pointer-layer { position: absolute; inset: -8px; }
+.hero-focus-layer { position: absolute; inset: 0; }
+.hero-opening { position: absolute; inset: 0; z-index: 25; display: none; place-content: center; justify-items: center; gap: 18px; background: rgb(25 28 24 / .25); color: var(--ivory); pointer-events: none; }
+.hero[data-opening] .hero-opening { display: grid; }
+.hero[data-opening] :is(.hero-title, .hero-copy, .hero-cta-mask, .hero-eyebrow) { visibility: hidden; }
+.hero[data-opening] .hero-focus-layer { filter: blur(6px); }
+.opening-wordmark { display: block; width: min(76vw, 600px); height: auto; overflow: visible; }
+.opening-wordmark path { fill: currentColor; fill-opacity: 0; stroke: currentColor; stroke-width: .6; stroke-linecap: round; stroke-linejoin: round; }
+.hero-opening-caption { font-size: 8px; letter-spacing: .3em; text-transform: uppercase; }
+.hero-split-line { padding-bottom: .12em; margin-bottom: -.12em; }
+
+/* CSS underlines remain available for keyboard, reduced motion and failed JS. */
+.draw-underline { display: none; position: absolute; inset: auto 0 0; width: 100% !important; height: 2px !important; overflow: visible; pointer-events: none; transform: none !important; }
+.draw-underline path { fill: none; stroke: currentColor; stroke-width: 1; }
+[data-draw-enhanced] { position: relative; }
+[data-draw-enhanced] > .draw-underline { display: block; }
+[data-draw-enhanced]::after, .desktop-nav [data-draw-enhanced] .header-ink > span::after { display: none; }
+.site-header [data-draw-enhanced] > .draw-underline { color: var(--ivory); mix-blend-mode: difference; }
+.button-content { display: inline-grid; grid-template-columns: minmax(0, 1fr) 28px; gap: 12px; align-items: center; width: 100%; }
+.button-label { min-width: 0; }
+.button-icon { justify-self: start; display: inline-flex; }
+.button-content[data-expanded] .button-icon { justify-self: end; }
+.button-content svg { flex: none; }
+
+/* One quiet atmosphere behind the selection, never behind the photograph. */
+.selected-section { position: relative; isolation: isolate; overflow: clip; }
+.content-atmosphere { position: absolute; inset: -6%; z-index: -1; pointer-events: none; background: radial-gradient(ellipse at 15% 30%, rgb(102 86 56 / .055), transparent 60%), radial-gradient(ellipse at 90% 75%, rgb(77 87 66 / .04), transparent 55%); }
+@media (prefers-reduced-motion: reduce) {
+  .hero[data-opening] .hero-opening, .draw-underline { display: none !important; }
+  .hero[data-opening] :is(.hero-title, .hero-copy, .hero-cta-mask, .hero-eyebrow) { visibility: visible !important; opacity: 1 !important; }
+  .hero-pointer-layer { transform: none !important; }
+  .hero-focus-layer { filter: none !important; }
+  .property-facts > div, .property-price, .property-reference { opacity: 1 !important; transform: none !important; }
+}

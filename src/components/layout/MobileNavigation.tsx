@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, type ReactNode } from "react";
-import Link from "next/link";
+import { SiteLink as Link } from "@/components/ui/SiteLink";
 import { Menu, X } from "lucide-react";
 
 export function MobileNavigation({ icon }: { icon?: ReactNode }) {

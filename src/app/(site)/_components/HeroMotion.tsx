@@ -1,27 +1,9 @@
 "use client";
 
-import { useEffect, useLayoutEffect, type ReactNode } from "react";
-import { stagger, useAnimate } from "motion/react";
+import { useEffect, useRef, type ReactNode } from "react";
 
 export function HeroMotion({ children }: { children: ReactNode }) {
-  const [scope, animate] = useAnimate<HTMLElement>();
-
-  useLayoutEffect(() => {
-    const root = scope.current;
-    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
-    // HTML is readable before hydration and without JavaScript.
-    if (!root || preference.matches || window.scrollY > root.offsetHeight / 2) return;
-    const lines = root.querySelectorAll<HTMLElement>("[data-hero-reveal]");
-    const entrance = animate(lines, { transform: ["translateY(115%)", "translateY(0%)"] }, {
-      duration: 0.85, delay: stagger(0.085), ease: [0.22, 1, 0.36, 1],
-    });
-    const clear = () => {
-      entrance.stop();
-      lines.forEach((line) => line.style.removeProperty("transform"));
-    };
-    preference.addEventListener("change", clear);
-    return () => { preference.removeEventListener("change", clear); clear(); };
-  }, [animate, scope]);
+  const scope = useRef<HTMLElement>(null);
 
   useEffect(() => {
     let disposed = false;
@@ -30,23 +12,45 @@ export function HeroMotion({ children }: { children: ReactNode }) {
       if (disposed || !scope.current) return;
       const root = scope.current;
       const media = root.querySelector<HTMLElement>("[data-hero-media]");
-      if (!media) return;
+      const pointer = root.querySelector<HTMLElement>(".hero-pointer-layer");
+      if (!media || !pointer) return;
       const queries = gsap.matchMedia();
       queries.add({
         motion: "(prefers-reduced-motion: no-preference)",
         desktop: "(min-width: 768px)",
+        fine: "(hover: hover) and (pointer: fine)",
       }, (context) => {
         if (!context.conditions?.motion) return;
+        // Scroll and pointer own different elements; Lenis keeps its single ticker.
         gsap.fromTo(media, { y: 0 }, {
-          y: context.conditions.desktop ? 60 : 30,
-          ease: "none",
+          y: context.conditions.desktop ? 60 : 30, ease: "none",
           scrollTrigger: { trigger: root, start: "top top", end: "bottom top", scrub: true },
         });
+        if (!context.conditions.fine) return;
+        const x = gsap.quickTo(pointer, "x", { duration: .65, ease: "power3.out" });
+        const y = gsap.quickTo(pointer, "y", { duration: .65, ease: "power3.out" });
+        const reset = () => { x(0); y(0); };
+        const move = (event: PointerEvent) => {
+          if (event.pointerType === "touch" || root.hasAttribute("data-opening") || document.hidden) return;
+          const rect = root.getBoundingClientRect();
+          x(Math.max(-6, Math.min(6, (.5 - (event.clientX - rect.left) / rect.width) * 12)));
+          y(Math.max(-4, Math.min(4, (.5 - (event.clientY - rect.top) / rect.height) * 8)));
+        };
+        root.addEventListener("pointermove", move, { passive: true });
+        root.addEventListener("pointerleave", reset);
+        window.addEventListener("blur", reset);
+        document.addEventListener("visibilitychange", reset);
+        return () => {
+          root.removeEventListener("pointermove", move);
+          root.removeEventListener("pointerleave", reset);
+          window.removeEventListener("blur", reset);
+          document.removeEventListener("visibilitychange", reset);
+        };
       });
       cleanup = () => queries.revert();
-    });
+    }).catch(() => { /* Static media and native scroll remain usable. */ });
     return () => { disposed = true; cleanup?.(); };
-  }, [scope]);
+  }, []);
 
   return <section ref={scope} className="hero on-dark" aria-labelledby="home-title">{children}</section>;
 }

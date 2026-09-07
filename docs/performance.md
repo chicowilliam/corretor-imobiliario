@@ -77,3 +77,70 @@ preserva os resultados essenciais no projeto.
 O comportamento foi validado, mas fluidez sustentada em hardware intermediário
 de 120Hz permanece pendente. O notebook disponível apresentou engasgos com
 o conjunto ativo. Não há declaração de aprovação de performance a 120fps.
+
+## Conferência final retomada — 7 de setembro de 2026
+
+A foto da seção Sobre foi conferida novamente no navegador, após a
+decodificação da imagem e a conclusão das duas camadas do reveal. A imagem
+estava carregada (`naturalWidth: 576`), visível e com as duas transformações
+na posição final; os contadores exibiam 12 e 140+. Evidência:
+`artifacts/refinements/advisor-resumed.png`.
+
+A captura completa `home-complete.png` foi refeita após percorrer todas as
+seções e conferida com os três cards e a foto do corretor visíveis. Também
+foram conferidos o card e a seção Sobre em mobile emulado com movimento
+reduzido (`cards-mobile-reduced.png` e `advisor-mobile-reduced.png`).
+
+A captura anterior com a área vazia não comprova uma falha do componente:
+o comportamento foi confirmado sem alterar o código da Home. A conferência
+de captura passa a aguardar tanto `.depth-mask` quanto `.depth-image`.
+Navbar, Hero, tipografia, paleta e dependências permaneceram preservados.
+Esta retomada é uma conferência visual, não uma nova medição de performance;
+os resultados e limites do teste integrado acima continuam válidos.
+
+## Rodada cinematográfica — 7 de setembro de 2026
+
+Nova medição depois de DrawSVG/SplitText, foco inicial, parallax de cursor,
+Flip, cascata dos fatos e atmosfera da seleção. O carregamento da foto do
+corretor também foi corrigido: uma máscara totalmente fechada podia impedir
+o lazy loading. A solicitação agora ocorre quando o contêiner entra na tela.
+
+Chrome local 152.0.7977.77, janela real, viewport 1280 × 720, Intel HD
+Graphics 500 (driver 31.0.101.2140). Composição, rasterização e decodificação
+de vídeo por GPU confirmadas pelo CDP. Não houve throttling de CPU.
+O notebook continua sendo o Celeron N3350 com tela de 59Hz descrito acima.
+
+| Amostra final | Média de callbacks RAF | P95 |
+| --- | ---: | ---: |
+| Home parada, primeira amostra de 3s | 58,7fps | 18,1ms |
+| Primeira passagem integrada de 6,5s | 32,3fps | 119,4ms |
+| Home parada após carregar mídias, 3s | 59,6fps | 18,2ms |
+| Passagem integrada repetida, 6,5s | 46,1fps | 48,7ms |
+
+Antes da amostra repetida, o Hero estava no topo, a abertura concluída,
+o filtro de foco removido, o vídeo reproduzindo e a aba visível. A passagem
+exercita eventos de roda/ponteiro, hover dos cards, Lenis, parallax, cursor,
+tilt, cascata e as seções à medida que entram na tela.
+
+A primeira passagem teve nove tarefas longas de 50–220ms; a repetida teve
+quatro de 50–77ms. Os atrasos foram observados principalmente na região do
+imóvel em destaque (P95 de 301,1ms, depois 149,8ms) e seleção (133,8ms, depois
+68,9ms). Sobre passou de 167,1ms para 35ms; proprietários, de 165,8ms para
+49ms. Algumas regiões tiveram poucas amostras. Esses marcadores mostram onde
+os intervalos ocorreram, sem provar que uma animação específica os causou.
+
+Um ensaio anterior desta mesma rodada registrou 14,2fps na amostra parada e
+33,7fps na passagem integrada. A variação reforça o limite de amostras curtas
+em uma máquina compartilhada e com carregamento inicial. Não se declara
+taxa estável com base na melhor amostra nem melhoria causal contra a rodada
+anterior. Aberturas a frio também acionaram o fallback de segurança em alguns
+testes; a sequência completa foi validada separadamente.
+
+**120fps não foi atingido nem certificado.** Os números medem intervalos
+de callbacks RAF, não frames apresentados externamente por uma tela. Não
+houve telefone físico intermediário de 120Hz disponível. Nenhum WebGL foi
+acrescentado para tentar sustentar um resultado que o hardware não comprovou.
+
+Reprodução: python scripts/measure-cinematic.py. Evidência da amostra final:
+artifacts/cinematic/performance.json. A revisão funcional/visual está em
+docs/cinematic-motion.md, com checks.json e fallback-checks.json aprovados.

@@ -37,8 +37,10 @@ export function HeroVideo({ src, poster, objectPosition, children }: { src: stri
 
   return <>
     <div className="hero-media" data-hero-media>
+      <div className="hero-pointer-layer"><div className="hero-focus-layer">
       {children}
       <video ref={ref} className="hero-video" style={{ objectPosition }} data-playing={ready && !failed && !reduced} poster={poster} muted loop playsInline preload="none" aria-hidden="true" onPlaying={() => { setReady(true); setPlaying(true); }} onPause={() => setPlaying(false)} onError={() => { setFailed(true); setPlaying(false); }} />
+      </div></div>
     </div>
     {!reduced && !failed ? <div className="absolute inset-x-0 bottom-8 z-10 pointer-events-none"><div className="shell flex justify-end"><button type="button" className="video-toggle pointer-events-auto" onClick={() => {
       if (!ref.current) return;

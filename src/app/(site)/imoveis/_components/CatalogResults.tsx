@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { SiteLink as Link } from "@/components/ui/SiteLink";
 import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/motion/Reveal";
 import { PropertyCard } from "@/components/property/PropertyCard";
@@ -11,8 +11,7 @@ export function CatalogResults({ properties, hasSearch, whatsapp }: { properties
       <Reveal>
         <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
           <div>
-            <span className="eyebrow mb-4 text-olive">Catálogo</span>
-            <h1 id="catalog-heading" className="display section-title">Imóveis com<br />espaço para o seu <em>ritmo.</em></h1>
+            <h1 id="catalog-heading" className="display section-title">Imóveis em<br />São Paulo.</h1>
           </div>
           <Link className="text-link" href="/">Voltar à home<ArrowUpRight aria-hidden="true" /></Link>
         </div>

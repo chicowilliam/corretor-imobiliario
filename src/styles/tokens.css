@@ -3,8 +3,11 @@
   --paper: #ebe8df;
   --charcoal: #252722;
   --ink: #282b25;
-  --olive: #5b634c;
-  --olive-dark: #454c3a;
+  --accent: #665638;
+  --accent-strong: #4d4029;
+  /* Compatibility aliases keep the validated header and motion consumers intact. */
+  --olive: var(--accent);
+  --olive-dark: var(--accent-strong);
   --stone: #777366;
   --muted: #686a61;
   --line: #d6d6ca;
@@ -18,6 +21,7 @@
   --color-charcoal: var(--charcoal);
   --color-ink: var(--ink);
   --color-olive: var(--olive);
+  --color-accent: var(--accent);
   --color-stone: var(--stone);
   --color-muted: var(--muted);
   --color-line: var(--line);

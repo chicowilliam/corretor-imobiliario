@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { SiteLink as Link } from "@/components/ui/SiteLink";
 import { ContactCTA } from "@/components/lead/ContactCTA";
 
 export function SiteFooter() {

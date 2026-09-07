@@ -27,6 +27,9 @@ export function DepthReveal({ children, className }: { children: ReactNode; clas
       else {
         photo.addEventListener("load", show, { once: true });
         photo.addEventListener("error", show, { once: true });
+        // A fully clipped image may never enter the browser's lazy-load area.
+        // Request it only after the visible photo container enters the viewport.
+        photo.loading = "eager";
       }
     }, { threshold: 0.18 });
     observer.observe(root);

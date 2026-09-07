@@ -13,5 +13,5 @@ export function HeroMedia({ imageSrc, imageAlt, videoSrc, objectPosition = "cent
   const poster = <Image className="hero-poster" src={imageSrc} alt={imageAlt} fill sizes="100vw" preload style={{ objectPosition }} />;
   return videoSrc
     ? <HeroVideo key={videoSrc} src={videoSrc} poster={imageSrc} objectPosition={objectPosition}>{poster}</HeroVideo>
-    : <div className="hero-media" data-hero-media>{poster}</div>;
+    : <div className="hero-media" data-hero-media><div className="hero-pointer-layer"><div className="hero-focus-layer">{poster}</div></div></div>;
 }

@@ -15,9 +15,10 @@ foi gerada e nenhuma publicação foi feita.
   interpola a opacidade entre 0 e 96px na Home. Outras rotas começam sólidas.
   Texto claro/escuro usa camadas visuais sobrepostas, mantendo um só link ou
   botão e um único nome acessível. O blur é fixo; apenas a opacidade varia.
-- `src/app/(site)/_components/HeroMotion.tsx`: Motion controla a entrada
-  por linhas em máscaras estáticas; GSAP controla exclusivamente o transform
-  da mídia. O parallax vai de 0 a 60px no desktop e de 0 a 30px no mobile.
+- `src/app/(site)/_components/HeroMotion.tsx`: GSAP controla o parallax por
+  scroll (0–60px desktop, 0–30px mobile) e uma camada separada responde ao
+  cursor. `HeroOpening.tsx` coordena DrawSVG, foco e SplitText. A sequência
+  atual e seus fallbacks estão documentados em `docs/cinematic-motion.md`.
 - `HomeHero.tsx` e `HeroMedia.tsx` continuam Server Components. O HTML do título
   e a imagem são legíveis mesmo sem JavaScript.
 
@@ -45,8 +46,9 @@ parallax. Falha de mídia preserva a imagem estática.
 - Bloqueio de overflow nos diálogos existentes para o Lenis; fechar o diálogo
   libera o scroll. Eventos dentro de diálogos mantêm comportamento nativo.
 - Eventos, observers, ticker e ScrollTriggers têm limpeza no desmontar.
-- Todas as novas animações alteram apenas transform/opacity. Máscaras, blur,
-  dimensões e enquadramento são estáticos.
+- Transform/opacity são a regra. A rodada cinematográfica acrescenta as
+  exceções solicitadas de traço SVG e blur transitório de 0,6s na abertura.
+  Máscaras, dimensões e enquadramento continuam estáticos.
 
 ## Verificação
 
@@ -72,7 +74,7 @@ Outras checagens: `npm run typecheck`, `npm run lint`, `npm test`, `npm run buil
   ordenado pela posição na lista, evitando atrasar cards ainda fora da tela.
 - `PropertyCardMotion`: perspective de 1200px e tilt limitado a ±2 graus,
   somente com ponteiro preciso. A camada de entrada não controla o tilt.
-- `PropertyCardMedia`: enquadramento 4:3 em todas as posições e tamanhos,
+- `PropertyCardMedia`: enquadramento 4:5 em todas as posições e tamanhos (revisão do design system),
   object-fit cover e ponto focal ajustável em `property.media.card.objectPosition`.
   Os mocks definem focos próprios por fotografia. Zoom de 1.035 apenas na mídia.
 - `property.media.card.video`: opcional; permanece null nos mocks. Para trazer
@@ -103,5 +105,6 @@ Verificação integrada: `python scripts/verify-refinements.py`.
 Para medir a versão de produção, definir `MOTION_TEST_URL` apontando para
 `next start`. Evidências e amostras ficam em `artifacts/refinements/`.
 Consultar `docs/performance.md` para resultados e limites do hardware disponível.
+As regras atuais de grid e ficha técnica estão em `docs/design-system.md`.
 
 WebGL não foi incluído. Não há promessa de 120fps sem medição em hardware real.

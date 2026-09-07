@@ -13,6 +13,45 @@ export function PropertyCardMotion({ children }: { children: ReactNode }) {
   const rotateY = useSpring(y, { stiffness: 230, damping: 28 });
 
   useEffect(() => {
+    const card = root.current;
+    if (!card) return;
+    const preference = matchMedia("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
+    const details = card.querySelectorAll<HTMLElement>(".property-facts > div, .property-price, .property-reference");
+    let disposed = false;
+    let hovered = false;
+    let gsap: typeof import("gsap").gsap | undefined;
+    const clear = () => {
+      hovered = false;
+      gsap?.killTweensOf(details);
+      details.forEach(el => { el.style.removeProperty("transform"); el.style.removeProperty("opacity"); });
+    };
+    const enter = (event: PointerEvent) => {
+      if (!preference.matches || event.pointerType === "touch") return;
+      hovered = true;
+      void import("gsap").then(runtime => {
+        gsap = runtime.gsap;
+        if (disposed || !hovered || !preference.matches) return;
+        gsap.fromTo(details, { y: 6, opacity: .45 }, {
+          y: 0, opacity: 1, duration: .24, delay: .06, stagger: .045,
+          ease: "power2.out", overwrite: true, clearProps: "transform,opacity",
+        });
+      }).catch(clear);
+    };
+    card.addEventListener("pointerenter", enter);
+    card.addEventListener("pointerleave", clear);
+    card.addEventListener("focusin", clear);
+    preference.addEventListener("change", clear);
+    return () => {
+      disposed = true;
+      clear();
+      card.removeEventListener("pointerenter", enter);
+      card.removeEventListener("pointerleave", clear);
+      card.removeEventListener("focusin", clear);
+      preference.removeEventListener("change", clear);
+    };
+  }, []);
+
+  useEffect(() => {
     const query = matchMedia("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
     const reset = () => { bounds.current = null; x.set(0); y.set(0); };
     const sync = () => {

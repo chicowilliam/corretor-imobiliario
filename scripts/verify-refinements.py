@@ -75,7 +75,7 @@ with sync_playwright() as p:
     delays = cards.evaluate_all("cards => cards.map(c=>Number(c.dataset.revealDelay))")
     assert len(set(delays)) > 1, f'No perceptible sequence: {delays}'
     frames = page.locator('#selecao .property-image').evaluate_all("els => els.map(el=>({ratio:el.clientWidth/el.clientHeight, position:getComputedStyle(el.querySelector('img')).objectPosition, fit:getComputedStyle(el.querySelector('img')).objectFit}))")
-    assert all(abs(frame['ratio']-4/3)<.02 and frame['fit']=='cover' for frame in frames), frames
+    assert all(abs(frame['ratio']-4/5)<.02 and frame['fit']=='cover' for frame in frames), frames
     card = cards.first
     box = card.bounding_box()
     page.mouse.move(box['x']+box['width']*.75, box['y']+box['height']*.3)

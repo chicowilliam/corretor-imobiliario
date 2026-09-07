@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import Link from "next/link";
+import { SiteLink as Link } from "@/components/ui/SiteLink";
 import { usePathname } from "next/navigation";
 import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
 import { ArrowUpRight, Menu } from "lucide-react";

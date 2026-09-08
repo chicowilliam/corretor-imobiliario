@@ -1,5 +1,6 @@
 "use client";
 
+import { ActionFrame } from "./ActionFrame";
 import { useEffect, useRef, type ReactNode } from "react";
 
 /** Flip animates the content, leaving the button transform to the magnetic cursor. */
@@ -67,5 +68,5 @@ export function ButtonContent({ children, icon }: { children: ReactNode; icon: R
       document.removeEventListener("visibilitychange", visibility);
     };
   }, []);
-  return <span ref={ref} className="button-content"><span className="button-label">{children}</span><span className="button-icon" aria-hidden="true">{icon}</span></span>;
+  return <><ActionFrame /><span ref={ref} className="button-content"><span className="button-label">{children}</span><span className="button-icon" aria-hidden="true">{icon}</span></span></>;
 }

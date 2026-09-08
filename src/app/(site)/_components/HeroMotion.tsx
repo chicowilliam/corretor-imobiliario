@@ -21,6 +21,16 @@ export function HeroMotion({ children }: { children: ReactNode }) {
         fine: "(hover: hover) and (pointer: fine)",
       }, (context) => {
         if (!context.conditions?.motion) return;
+        const exit = root.querySelector<HTMLElement>(".hero-exit-veil");
+        const edge = root.parentElement?.nextElementSibling?.querySelector<HTMLElement>(".hero-exit-edge");
+        if (exit) gsap.fromTo(exit, { opacity: 0 }, {
+          opacity: 1, ease: "sine.inOut",
+          scrollTrigger: { trigger: root.parentElement, start: "top top", end: () => `+=${window.innerHeight}`, scrub: .6, invalidateOnRefresh: true },
+        });
+        if (edge) gsap.fromTo(edge, { opacity: 0 }, {
+          opacity: 1, ease: "sine.out",
+          scrollTrigger: { trigger: root.parentElement, start: "top top", end: () => `+=${window.innerHeight * .35}`, scrub: .6, invalidateOnRefresh: true },
+        });
         // Scroll and pointer own different elements; Lenis keeps its single ticker.
         gsap.fromTo(media, { y: 0 }, {
           y: context.conditions.desktop ? 60 : 30, ease: "none",

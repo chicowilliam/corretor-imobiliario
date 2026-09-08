@@ -18,6 +18,7 @@ export function HomeHero({ hero }: { hero: { poster: ImageAsset; video: VideoAss
       <p className="hero-copy hero-mask"><span data-hero-reveal>Arquitetura com intenção. Escolhas com calma.<br />Imóveis para o seu jeito de viver.</span></p>
       <div className="hero-cta-mask"><a href="#selecao" className="text-link mt-7 w-fit pointer-events-auto" data-hero-reveal>Explore a seleção <ArrowUpRight aria-hidden="true" /><DrawUnderline /></a></div>
     </div>
-    <div className="hero-bottom pointer-events-none"><div className="shell flex items-end gap-4"><ArrowDown size={15} strokeWidth={1} aria-hidden="true" /><p className="hero-location text-[9px] tracking-[.06em]">Arquitetura & vida ao ar livre<br /><span className="text-[8px] opacity-80">Filme e fotografia de referência</span></p></div></div>
+    <div className="hero-bottom pointer-events-none"><div className="shell flex items-end gap-4"><ArrowDown size={15} strokeWidth={1} aria-hidden="true" /><p className="hero-location text-[9px] tracking-[.06em]">Belo Horizonte e entorno<br /><span className="text-[8px] opacity-80">Filme e fotografia de referência</span></p></div></div>
+    <div className="hero-exit-veil" aria-hidden="true" />
   </HeroMotion>;
 }

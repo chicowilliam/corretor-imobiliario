@@ -1,9 +1,18 @@
 "use client";
 
-import { useLayoutEffect, type ReactNode } from "react";
+import { useLayoutEffect, useSyncExternalStore, type ReactNode } from "react";
 import { useAnimate } from "motion/react";
 
+const mobileSnapshot = () => matchMedia("(max-width: 767px)").matches;
+const serverSnapshot = () => false;
+const subscribeMobile = (notify: () => void) => {
+  const query = matchMedia("(max-width: 767px)");
+  query.addEventListener("change", notify);
+  return () => query.removeEventListener("change", notify);
+};
+
 export function ListingSequence({ children, horizontal = false }: { children: ReactNode; horizontal?: boolean }) {
+  const horizontalActive = useSyncExternalStore(subscribeMobile, mobileSnapshot, serverSnapshot) && horizontal;
   const [scope, animate] = useAnimate<HTMLDivElement>();
   useLayoutEffect(() => {
     const root = scope.current;
@@ -40,5 +49,5 @@ export function ListingSequence({ children, horizontal = false }: { children: Re
     };
     // Parent remounts with a stable key when the curated set changes.
   }, [animate, scope]);
-  return <div ref={scope} className="editorial-listings" tabIndex={horizontal ? 0 : undefined} role={horizontal ? "region" : undefined} aria-label={horizontal ? "Seleção de imóveis, role horizontalmente para explorar" : undefined} data-lenis-prevent={horizontal ? "true" : undefined}>{children}</div>;
+  return <div ref={scope} className="editorial-listings" tabIndex={horizontalActive ? 0 : undefined} role={horizontalActive ? "region" : undefined} aria-label={horizontalActive ? "Seleção de imóveis, role horizontalmente para explorar" : undefined} data-lenis-prevent={horizontalActive ? "true" : undefined}>{children}</div>;
 }

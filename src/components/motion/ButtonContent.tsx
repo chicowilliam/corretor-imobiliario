@@ -2,6 +2,7 @@
 
 import { ActionFrame } from "./ActionFrame";
 import { useEffect, useRef, type ReactNode } from "react";
+import { subscribeMotionEvent } from "@/lib/motion-events";
 
 /** Flip animates the content, leaving the button transform to the magnetic cursor. */
 export function ButtonContent({ children, icon }: { children: ReactNode; icon: ReactNode }) {
@@ -54,8 +55,7 @@ export function ButtonContent({ children, icon }: { children: ReactNode; icon: R
     button.addEventListener("focus", reset);
     button.addEventListener("click", reset);
     preference.addEventListener("change", reset);
-    document.addEventListener("keydown", keyboard);
-    document.addEventListener("visibilitychange", visibility);
+    const stops = [subscribeMotionEvent("keydown", keyboard), subscribeMotionEvent("visibilitychange", visibility)];
     return () => {
       disposed = true;
       reset();
@@ -64,8 +64,7 @@ export function ButtonContent({ children, icon }: { children: ReactNode; icon: R
       button.removeEventListener("focus", reset);
       button.removeEventListener("click", reset);
       preference.removeEventListener("change", reset);
-      document.removeEventListener("keydown", keyboard);
-      document.removeEventListener("visibilitychange", visibility);
+      stops.forEach(stop => stop());
     };
   }, []);
   return <><ActionFrame /><span ref={ref} className="button-content"><span className="button-label">{children}</span><span className="button-icon" aria-hidden="true">{icon}</span></span></>;

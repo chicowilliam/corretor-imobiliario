@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
+import { subscribeMotionEvent } from "@/lib/motion-events";
 
 export function Reveal({ children, className }: { children: ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -16,6 +17,7 @@ export function Reveal({ children, className }: { children: ReactNode; className
     let context: ReturnType<typeof import("gsap").gsap.context> | undefined;
     let split: import("gsap/SplitText").SplitText | undefined;
     let watchdog: ReturnType<typeof setTimeout> | undefined;
+    const stops: (() => void)[] = [];
     const finish = () => {
       if (finished) return;
       finished = true;
@@ -23,15 +25,14 @@ export function Reveal({ children, className }: { children: ReactNode; className
       observer?.disconnect();
       context?.revert();
       split?.revert();
+      stops.forEach(stop => stop());
       root.dataset.textSequence = "complete";
     };
     const keyboard = (event: KeyboardEvent) => { if (event.key === "Tab" || event.key === "Escape") finish(); };
     const hidden = () => { if (document.hidden) finish(); };
     preference.addEventListener("change", finish);
     root.addEventListener("focusin", finish);
-    document.addEventListener("keydown", keyboard);
-    document.addEventListener("visibilitychange", hidden);
-    window.addEventListener("resize", finish);
+    stops.push(subscribeMotionEvent("keydown", keyboard), subscribeMotionEvent("visibilitychange", hidden), subscribeMotionEvent("resize", finish));
     void Promise.all([import("@/lib/gsap-opening"), document.fonts.ready]).then(([{ gsap, SplitText }]) => {
       if (disposed || finished || preference.matches) return;
       observer = new IntersectionObserver(([entry]) => {
@@ -59,9 +60,7 @@ export function Reveal({ children, className }: { children: ReactNode; className
       finish();
       preference.removeEventListener("change", finish);
       root.removeEventListener("focusin", finish);
-      document.removeEventListener("keydown", keyboard);
-      document.removeEventListener("visibilitychange", hidden);
-      window.removeEventListener("resize", finish);
+      stops.forEach(stop => stop());
     };
   }, []);
   return <div ref={ref} className={className}>{children}</div>;

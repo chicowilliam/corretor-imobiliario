@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
-import { MotionConfig } from "motion/react";
+import { domAnimation, LazyMotion, MotionConfig } from "motion/react";
 
 export function MotionProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -35,16 +35,21 @@ export function MotionProvider({ children }: { children: ReactNode }) {
         prevent: (node) => node instanceof Element && Boolean(node.closest("dialog")),
       });
       const tick = (seconds: number) => lenis.raf(seconds * 1000);
+      let ticking = false;
       const syncLock = () => {
-        if (document.hidden || document.body.style.overflow === "hidden") lenis.stop();
-        else lenis.start();
+        if (document.hidden || document.body.style.overflow === "hidden") {
+          lenis.stop();
+          if (ticking) { gsap.ticker.remove(tick); ticking = false; }
+        } else {
+          lenis.start();
+          if (!ticking) { gsap.ticker.add(tick); ticking = true; }
+        }
       };
       const observer = new MutationObserver(syncLock);
       observer.observe(document.body, { attributes: true, attributeFilter: ["style"] });
       document.addEventListener("visibilitychange", syncLock);
       lenis.on("scroll", ScrollTrigger.update);
       gsap.ticker.lagSmoothing(0);
-      gsap.ticker.add(tick);
       syncLock();
 
       refresh.current = () => {
@@ -76,5 +81,5 @@ export function MotionProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => { refresh.current?.(); }, [pathname]);
 
-  return <MotionConfig reducedMotion="user">{children}</MotionConfig>;
+  return <MotionConfig reducedMotion="user"><LazyMotion features={domAnimation} strict>{children}</LazyMotion></MotionConfig>;
 }

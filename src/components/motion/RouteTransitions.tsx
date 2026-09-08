@@ -2,7 +2,7 @@
 
 import { startTransition, useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, m as motion } from "motion/react";
 
 interface Navigation { id: number; from: string; href: string; started: boolean }
 

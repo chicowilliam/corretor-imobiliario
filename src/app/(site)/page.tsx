@@ -14,7 +14,9 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
   const search = parseHomeSearch(params);
   const content = await getHomeContent(search, params.selection === "all");
   return <main id="conteudo">
-    <HomeHero hero={content.hero} />
+    <div className="hero-chapter"><HomeHero hero={content.hero} /></div>
+    <div className="home-content">
+    <div className="hero-exit-edge" aria-hidden="true" />
     <HomeSearch areas={content.areas.map(({ id, name }) => ({ id, name }))} search={search} />
     <FeaturedProperty property={content.featured} whatsapp={content.agent.whatsapp} />
     <SelectedListings properties={content.selected} hasSearch={content.hasSearch} whatsapp={content.agent.whatsapp} />
@@ -22,5 +24,6 @@ export default async function Home({ searchParams }: { searchParams: Promise<Sea
     <OwnerInvitation image={content.privateProperty.media.cover} whatsapp={content.agent.whatsapp} />
     <SocialProof testimonials={content.testimonials} />
     <PrivateCollectionPreview property={content.privateProperty} whatsapp={content.agent.whatsapp} />
+    </div>
   </main>;
 }

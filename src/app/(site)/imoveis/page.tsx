@@ -6,7 +6,7 @@ import { CatalogResults } from "./_components/CatalogResults";
 
 export const metadata: Metadata = {
   title: "Imóveis — Tomás Avelar",
-  description: "Catálogo demonstrativo de imóveis selecionados em São Paulo.",
+  description: "Catálogo demonstrativo de imóveis selecionados em Belo Horizonte.",
 };
 
 export default async function CatalogPage({ searchParams }: { searchParams: Promise<SearchParams> }) {

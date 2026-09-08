@@ -22,7 +22,7 @@ export function PropertyPreview({ property, children, className = "text-link", w
     <Dialog title={property.title} open={open} onClose={() => setOpen(false)}>
       <div className="dialog-image"><Image src={property.media.cover.src} alt={property.media.cover.alt} fill sizes="(max-width: 767px) 92vw, 680px" /></div>
       <div className="dialog-inner">
-        <div className="property-location"><span>{property.neighborhood}</span><span>{property.purpose === "RENT" ? "Locação" : "Venda"}</span></div>
+        <div className="property-location"><span>{property.neighborhood}{property.city !== "Belo Horizonte" ? `, ${property.city}` : ""}</span><span>{property.purpose === "RENT" ? "Locação" : "Venda"}</span></div>
         <h3 className="display my-4 text-4xl">{property.title}</h3>
         <PropertyFacts property={property} />
         <p className="my-5 text-[13px] leading-7 text-muted">{property.description}</p>

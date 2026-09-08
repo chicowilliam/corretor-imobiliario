@@ -12,7 +12,7 @@
   --muted: #686a61;
   --line: #d6d6ca;
   --gutter: clamp(1.25rem, 5.2vw, 6rem);
-  --section-space: clamp(4.5rem, 8vw, 8.5rem);
+  --section-space: clamp(3.5rem, 6vw, 6rem);
 }
 
 @theme inline {

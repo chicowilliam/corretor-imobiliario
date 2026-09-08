@@ -11,7 +11,7 @@ export function CatalogResults({ properties, hasSearch, whatsapp }: { properties
       <Reveal>
         <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
           <div>
-            <h1 id="catalog-heading" className="display section-title">Imóveis em<br />São Paulo.</h1>
+            <h1 id="catalog-heading" className="display section-title">Imóveis em<br />Belo Horizonte.</h1><p className="section-heading-note mt-5">E uma seleção no entorno, em Nova Lima.</p>
           </div>
           <Link className="text-link" href="/">Voltar à home<ArrowUpRight aria-hidden="true" /></Link>
         </div>

@@ -3,6 +3,7 @@
 @import "../styles/tokens.css";
 @import "../styles/interactions.css";
 @import "../styles/cinematic.css";
+@import "../styles/polish.css";
 
 * { box-sizing: border-box; }
 html { scroll-padding-top: 116px; }

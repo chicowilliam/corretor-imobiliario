@@ -8,7 +8,7 @@ const interfaceFont = localFont({ src: "../../public/fonts/interface.woff2", var
 
 export const metadata: Metadata = {
   title: "Tomás Avelar — Um olhar particular sobre o morar",
-  description: "Arquitetura com intenção. Escolhas com calma. Uma curadoria demonstrativa de imóveis em São Paulo.",
+  description: "Arquitetura com intenção. Escolhas com calma. Uma curadoria demonstrativa de imóveis em Belo Horizonte.",
   robots: { index: false, follow: false },
 };
 

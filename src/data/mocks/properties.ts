@@ -9,6 +9,7 @@ type PropertyInput = Pick<Property, "id" | "reference" | "slug" | "title" | "exc
 
 function property({ cover, ...input }: PropertyInput): Property {
   return {
+    name: input.title,
     description: input.excerpt,
     status: "PUBLISHED", highlights: [], collection: "PUBLIC",
     previousPrice: null, currency: "BRL", priceVisibility: "PUBLIC",
@@ -28,7 +29,7 @@ function property({ cover, ...input }: PropertyInput): Property {
 
 export const properties: Property[] = [
   property({
-    id: "property-jardim", reference: "TA-001", slug: "casa-entre-jardins", title: "Casa entre jardins",
+    id: "property-jardim", reference: "TA-001", slug: "casa-entre-jardins", title: "Casa entre jardins", name: "Residência Jardins",
     excerpt: "O verde entra, a cidade desacelera. Uma casa que faz da luz natural o seu melhor projeto.",
     description: "Ambientes que se abrem para um jardim maduro, materiais que envelhecem bem e espaço para viver sem pressa. A sala integra estar, leitura e refeições, enquanto a ala íntima preserva o silêncio. A planta valoriza o jardim e conversa com a tradição das casas modernistas de Belo Horizonte. Cenário residencial fictício em Cidade Jardim.",
     type: "HOUSE", purpose: "SALE", price: 640_000_000, neighborhood: "Cidade Jardim", areaId: "area-cidade-jardim",
@@ -37,7 +38,7 @@ export const properties: Property[] = [
     features: [{ id: "garden", label: "Jardim privativo", category: "OUTDOOR" }, { id: "natural-light", label: "Luz natural", category: "INTERIOR" }],
   }),
   property({
-    id: "property-horizonte", reference: "TA-002", slug: "horizonte-lourdes", title: "Um novo ponto de vista",
+    id: "property-horizonte", reference: "TA-002", slug: "horizonte-lourdes", title: "Um novo ponto de vista", name: "Apartamento Mirante",
     excerpt: "Uma planta generosa em Lourdes, entre o recolhimento da casa e a vida cultural do entorno da Liberdade.",
     type: "APARTMENT", purpose: "SALE", price: 325_000_000, neighborhood: "Lourdes", areaId: "area-lourdes",
     area: 238, bedrooms: 3, suites: 3, bathrooms: 4, parking: 3,
@@ -46,7 +47,7 @@ export const properties: Property[] = [
     features: [{ id: "open-plan", label: "Planta integrada", category: "INTERIOR" }],
   }),
   property({
-    id: "property-patio", reference: "TA-003", slug: "casa-patio", title: "A vida ao redor do pátio",
+    id: "property-patio", reference: "TA-003", slug: "casa-patio", title: "A vida ao redor do pátio", name: "Residência Alameda",
     excerpt: "No Belvedere, volumes simples e um pátio protegido dão escala íntima à casa. O jardim participa da rotina.",
     type: "HOUSE", purpose: "SALE", price: 495_000_000, previousPrice: 540_000_000,
     neighborhood: "Belvedere", areaId: "area-belvedere", area: 360, lotArea: 510,
@@ -55,7 +56,7 @@ export const properties: Property[] = [
     features: [{ id: "pool", label: "Piscina", category: "OUTDOOR" }, { id: "garden", label: "Jardim privativo", category: "OUTDOOR" }],
   }),
   property({
-    id: "property-loft", reference: "TA-004", slug: "duplex-savassi", title: "Texturas de uma vida urbana",
+    id: "property-loft", reference: "TA-004", slug: "duplex-savassi", title: "Texturas de uma vida urbana", name: "Apartamento Praça",
     excerpt: "Madeira e luz em um duplex na Savassi. Cafés, livrarias e a vida do bairro fazem parte do endereço.",
     type: "APARTMENT", purpose: "RENT", price: 880_000, neighborhood: "Savassi", areaId: "area-savassi",
     area: 112, bedrooms: 2, suites: 1, bathrooms: 2, parking: 1,
@@ -63,7 +64,7 @@ export const properties: Property[] = [
     features: [{ id: "open-plan", label: "Planta integrada", category: "INTERIOR" }],
   }),
   property({
-    id: "property-terraco", reference: "TA-005", slug: "terraco-vila-da-serra", title: "Um jardim sobre a cidade",
+    id: "property-terraco", reference: "TA-005", slug: "terraco-vila-da-serra", title: "Um jardim sobre a cidade", name: "Cobertura Aurora",
     excerpt: "Em Vila da Serra, Nova Lima, um terraço para cultivar um jardim e acompanhar a luz sobre a paisagem de montanhas.",
     type: "PENTHOUSE", purpose: "RENT", price: 1_750_000, city: "Nova Lima", neighborhood: "Vila da Serra", areaId: "area-vila-da-serra",
     area: 285, bedrooms: 3, suites: 3, bathrooms: 4, parking: 3,
@@ -71,7 +72,7 @@ export const properties: Property[] = [
     features: [{ id: "terrace", label: "Terraço privativo", category: "OUTDOOR" }],
   }),
   property({
-    id: "property-reserva", reference: "TA-006", slug: "casa-reserva", title: "Entre o concreto e a natureza",
+    id: "property-reserva", reference: "TA-006", slug: "casa-reserva", title: "Entre o concreto e a natureza", name: "Residência Serra",
     excerpt: "Em Mangabeiras, arquitetura horizontal e jardim na paisagem da Serra do Curral. Uma apresentação reservada, próxima ao parque.",
     type: "HOUSE", purpose: "SALE", price: null, priceVisibility: "ON_REQUEST", collection: "PRIVATE",
     neighborhood: "Mangabeiras", areaId: "area-mangabeiras", area: 580, lotArea: 920,

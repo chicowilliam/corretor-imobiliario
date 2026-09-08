@@ -1,10 +1,10 @@
 "use client";
 
 import { ActionFrame } from "@/components/motion/ActionFrame";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { SiteLink as Link } from "@/components/ui/SiteLink";
 import { usePathname } from "next/navigation";
-import { motion, useMotionValue, useScroll, useTransform, type MotionValue } from "motion/react";
+import { m as motion, useMotionValue, useMotionValueEvent, useScroll, useTransform, type MotionValue } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { ContactCTA } from "@/components/lead/ContactCTA";
 import { MobileNavigation } from "./MobileNavigation";
@@ -28,6 +28,19 @@ export function SiteHeader() {
   const home = usePathname() === "/";
   const { scrollY } = useScroll();
   const sceneEnd = useMotionValue(1000);
+  const header = useRef<HTMLElement>(null);
+  const travel = useRef(0);
+  const [hidden, setHidden] = useState(false);
+  useMotionValueEvent(scrollY, "change", current => {
+    const delta = current - (scrollY.getPrevious() ?? current);
+    if (current < (home ? sceneEnd.get() : 120) || document.querySelector("dialog[open]") || header.current?.contains(document.activeElement)) {
+      travel.current = 0; setHidden(false); return;
+    }
+    if (Math.sign(delta) !== Math.sign(travel.current)) travel.current = 0;
+    travel.current += delta;
+    if (travel.current > 60) setHidden(true);
+    if (travel.current < -24) setHidden(false);
+  });
   useEffect(() => {
     if (!home) return;
     const measure = () => {
@@ -48,7 +61,7 @@ export function SiteHeader() {
   const ink = { dark, light };
 
   return <>
-    <header className="site-header" data-hero-header={home}>
+    <header ref={header} className="site-header" data-hero-header={home} data-hidden={hidden} onFocusCapture={() => { travel.current = 0; setHidden(false); }}>
       <motion.div className="header-glass" style={{ opacity: glass }} aria-hidden="true" />
       <div className="shell header-inner flex h-full items-center justify-between gap-5">
         <Link href="/" className="wordmark" aria-label="Tomás Avelar — início">

@@ -8,9 +8,21 @@
 .home-content #colecao-privada { padding-top: 1.5rem; }
 .selected-section .editorial-listings { display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: clamp(270px, 30vw, 385px); align-items: stretch; gap: 24px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; padding: 16px 8px 32px; margin-inline: -8px; scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--accent) 42%, var(--paper)) var(--paper); }
 .selected-section .editorial-listings > .property-card { min-width: 0; scroll-snap-align: start; }
-.selected-section .property-card-title { min-height: 2.6em; }
+.selected-section .property-card-title { min-height: 0; margin-bottom: 12px; }
 .selected-section .property-card .property-card-depth { padding: 0 0 18px; background: transparent; border: 0; box-shadow: none; }
 .selected-section .property-card .property-image { aspect-ratio: 4 / 5; }
+@media (min-width: 768px) {
+  .selected-section > .shell { max-width: 1920px; padding-inline: clamp(28px, 3vw, 64px); }
+  .selected-section .editorial-listings { grid-auto-flow: row; grid-auto-columns: auto; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 28px; overflow: visible; scroll-snap-type: none; }
+  .selected-section .property-card .property-image { aspect-ratio: 6 / 5; }
+  .selected-section .selection-scroll-hint { display: none; }
+}
+@media (min-width: 1280px) {
+  .selected-section .editorial-listings { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px clamp(24px, 2vw, 38px); }
+}
+.property-card .property-editorial-title { margin: 0 8px 20px; font-size: 13px; line-height: 1.6; color: var(--muted); }
+.property-card .property-card-title + .property-location { margin-top: 0; margin-bottom: 14px; }
+.property-preview-loading { min-height: min(720px, 90svh); }
 .count-up { font-family: var(--font-interface), sans-serif; font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; letter-spacing: -.025em; }
 .counter-wheels { display: none; height: 1em; overflow: hidden; vertical-align: baseline; }
 .count-up[data-rolling] .counter-wheels { display: inline-flex; }

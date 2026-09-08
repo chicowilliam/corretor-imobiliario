@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
-import { motion, useMotionValue, useSpring } from "motion/react";
+import { m as motion, useMotionValue, useSpring } from "motion/react";
+import { subscribeMotionEvent } from "@/lib/motion-events";
 
 export function PropertyCardMotion({ children }: { children: ReactNode }) {
   const root = useRef<HTMLElement>(null);
@@ -53,7 +54,10 @@ export function PropertyCardMotion({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const query = matchMedia("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
-    const reset = () => { bounds.current = null; x.set(0); y.set(0); };
+    const reset = () => {
+      if (!bounds.current && x.get() === 0 && y.get() === 0) return;
+      bounds.current = null; x.set(0); y.set(0);
+    };
     const sync = () => {
       enabled.current = query.matches;
       reset();
@@ -61,12 +65,10 @@ export function PropertyCardMotion({ children }: { children: ReactNode }) {
     };
     sync();
     query.addEventListener("change", sync);
-    window.addEventListener("scroll", reset, { passive: true });
-    document.addEventListener("visibilitychange", reset);
+    const stops = [subscribeMotionEvent("scroll", reset), subscribeMotionEvent("visibilitychange", reset)];
     return () => {
       query.removeEventListener("change", sync);
-      window.removeEventListener("scroll", reset);
-      document.removeEventListener("visibilitychange", reset);
+      stops.forEach(stop => stop());
     };
   }, [x, y, rotateX, rotateY]);
 

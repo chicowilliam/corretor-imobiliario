@@ -32,12 +32,12 @@ export function ContactCTA({ children, message, title = "Vamos conversar", class
   const [open, setOpen] = useState(false);
   return <>
     <button type="button" className={className} onClick={() => setOpen(true)}>{className.includes("header-contact") ? <>{children}{icon}</> : <ButtonContent icon={icon}>{children}</ButtonContent>}{className.includes("header-contact") ? null : <DrawUnderline />}</button>
-    <Dialog open={open} onClose={() => setOpen(false)} title={title}>
+    {open ? <Dialog open onClose={() => setOpen(false)} title={title}>
       <div className="dialog-inner pt-16">
         <span className="eyebrow text-olive">Atendimento pessoal</span>
         <h3 className="display my-5 text-4xl">{title}</h3>
         <ContactPanel message={message} whatsapp={whatsapp} />
       </div>
-    </Dialog>
+    </Dialog> : null}
   </>;
 }

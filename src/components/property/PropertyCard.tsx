@@ -8,11 +8,11 @@ import { PropertyFacts } from "./PropertyFacts";
 
 const labels = { JUST_LISTED: "Novo na seleção", EXCLUSIVE: "Exclusividade", PRICE_REDUCED: "Novo valor" };
 
-export function PropertyCard({ property, whatsapp }: { property: Property; whatsapp: string | null }) {
+export function PropertyCard({ property, whatsapp, imageSizes }: { property: Property; whatsapp: string | null; imageSizes?: string }) {
   const highlight = property.highlights[0];
   return <PropertyCardMotion>
     <PropertyPreview property={property} whatsapp={whatsapp} className="property-image" showArrow={false}>
-      <PropertyCardMedia imageSrc={property.media.cover.src} imageAlt={property.media.cover.alt} objectPosition={property.media.card?.objectPosition} videoSrc={property.media.card?.video?.src} />
+      <PropertyCardMedia imageSrc={property.media.cover.src} imageAlt={property.media.cover.alt} objectPosition={property.media.card?.objectPosition} videoSrc={property.media.card?.video?.src} sizes={imageSizes} />
       {highlight ? <span className="property-badge">{labels[highlight]}</span> : null}
       <span className="image-arrow"><ArrowUpRight size={18} strokeWidth={1.3} aria-hidden="true" /></span>
     </PropertyPreview>

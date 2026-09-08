@@ -8,9 +8,10 @@ interface PropertyCardMediaProps {
   imageAlt: string;
   videoSrc?: string;
   objectPosition?: string;
+  sizes?: string;
 }
 
-export function PropertyCardMedia({ imageSrc, imageAlt, videoSrc, objectPosition = "center" }: PropertyCardMediaProps) {
+export function PropertyCardMedia({ imageSrc, imageAlt, videoSrc, objectPosition = "center", sizes = "(max-width: 767px) 90vw, (max-width: 1023px) 44vw, (max-width: 1600px) 29vw, 450px" }: PropertyCardMediaProps) {
   const root = useRef<HTMLSpanElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
@@ -57,7 +58,7 @@ export function PropertyCardMedia({ imageSrc, imageAlt, videoSrc, objectPosition
     };
   }, [videoSrc]);
   return <span ref={root} className="card-media">
-    <Image src={imageSrc} alt={imageAlt} fill loading="lazy" sizes="(max-width: 767px) 90vw, (max-width: 1023px) 44vw, (max-width: 1600px) 29vw, 450px" style={{ objectPosition }} />
+    <Image src={imageSrc} alt={imageAlt} fill loading="lazy" sizes={sizes} style={{ objectPosition }} />
     {videoSrc ? <video ref={video} poster={imageSrc} muted loop playsInline preload="none" aria-hidden="true" className="card-hover-video" data-playing={playing} style={{ objectPosition }} onPlaying={() => setPlaying(true)} onPause={() => setPlaying(false)} /> : null}
   </span>;
 }

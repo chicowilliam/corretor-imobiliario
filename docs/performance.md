@@ -144,3 +144,34 @@ acrescentado para tentar sustentar um resultado que o hardware não comprovou.
 Reprodução: python scripts/measure-cinematic.py. Evidência da amostra final:
 artifacts/cinematic/performance.json. A revisão funcional/visual está em
 docs/cinematic-motion.md, com checks.json e fallback-checks.json aprovados.
+
+## Acabamento e Belo Horizonte — 7 de setembro de 2026
+
+A meta solicitada nesta rodada passou a ser **60fps em hardware intermediário
+real**; 120fps apenas se medidos em aparelho e tela compatíveis. Não houve
+acréscimo de WebGL ou do wireframe opcional.
+
+No mesmo notebook Celeron N3350 / Intel HD Graphics 500, tela de 59Hz,
+Chrome local com viewport 1280 × 720 e sem throttling, foram registrados:
+
+| Amostra | Média RAF | P95 |
+| --- | ---: | ---: |
+| Home parada, 3s | 58,7fps | 18,3ms |
+| Primeira passagem integrada, 6,5s | 30,3fps | 117,2ms |
+| Home parada após a passagem, 3s | 47,1fps | 18,5ms |
+| Passagem integrada repetida, 6,5s | 43,2fps | 51ms |
+
+A primeira passagem registrou 21 tarefas longas de 52–162ms; a repetida,
+11 de 50–94ms. Destaque, seleção e Sobre concentram parte dos atrasos;
+os marcadores de região não isolam sua causa. Uma pausa isolada longa na
+segunda amostra parada também derrubou a média. Não se afirma melhoria ou
+regressão causal com amostras curtas em uma máquina compartilhada.
+
+**60fps sustentados não foram atingidos nesse notebook.** Não houve telefone
+físico intermediário disponível e a tela não permite validar 120fps. Medem-se
+callbacks RAF, não frames apresentados por instrumentação externa.
+
+Relatório completo, revisão visual e limites: [polish-bh.md](polish-bh.md).
+Reprodução: `python scripts/measure-polish.py`. Evidência:
+`artifacts/polish/performance.json`; suíte funcional/visual:
+`python scripts/verify-polish.py`, aprovada com zero erros JavaScript.

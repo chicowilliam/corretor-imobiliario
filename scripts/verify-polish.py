@@ -1,0 +1,140 @@
+"""Belo Horizonte content, custom inputs, CTA feedback and visual regression."""
+import json
+import os
+from pathlib import Path
+from playwright.sync_api import sync_playwright, expect
+
+BASE = os.environ.get("MOTION_TEST_URL", "http://127.0.0.1:3001")
+OUT = Path("artifacts/polish")
+OUT.mkdir(parents=True, exist_ok=True)
+expect.set_options(timeout=30000)
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(channel="chrome", headless=False)
+    context = browser.new_context(viewport={"width":1440,"height":900})
+    page = context.new_page()
+    page.set_default_timeout(60000)
+    errors = []
+    page.on("pageerror",lambda error: errors.append(str(error)))
+    page.goto(BASE,wait_until="domcontentloaded",timeout=180000)
+    page.wait_for_timeout(7000)
+    expect(page.locator(".hero-opening")).not_to_be_visible()
+    expect(page.locator('[role="combobox"]')).to_have_count(3)
+    geometry = page.evaluate("""() => ({
+      viewport:innerHeight,hero:document.querySelector('.hero').getBoundingClientRect().height,
+      next:document.querySelector('.home-content').getBoundingClientRect().top,
+      height:document.documentElement.scrollHeight
+    })""")
+    assert abs(geometry["hero"]-geometry["viewport"])<1,geometry
+    assert abs(geometry["next"]-geometry["viewport"])<1,geometry
+    assert "São Paulo" not in page.locator("body").inner_text()
+    page.screenshot(path=str(OUT/"hero-desktop.png"),timeout=60000)
+    page.screenshot(path=str(OUT/"nav-sentence.png"),clip={"x":0,"y":0,"width":1440,"height":140},timeout=60000)
+    variant = page.add_style_tag(content=".site-header .desktop-nav {font-size:10px!important;text-transform:uppercase;letter-spacing:.12em!important;font-weight:500!important;}")
+    page.screenshot(path=str(OUT/"nav-uppercase.png"),clip={"x":0,"y":0,"width":1440,"height":140},timeout=60000)
+    variant.evaluate("el=>el.remove()")
+    page.evaluate("scrollTo({top:80,behavior:'instant'})")
+    page.wait_for_timeout(400)
+    assert abs(page.locator(".hero").bounding_box()["y"])<1
+    assert page.locator(".home-content").bounding_box()["y"] < geometry["viewport"]
+    print("Full scene, overlap and two navigation variants: OK",flush=True)
+
+    purpose = page.locator("#home-purpose")
+    purpose.scroll_into_view_if_needed()
+    purpose.click()
+    expect(page.get_by_role("listbox")).to_be_visible()
+    page.get_by_role("option",name="Quero alugar",exact=True).click()
+    expect(page.locator('select[name="purpose"]')).to_have_value("RENT")
+    area = page.locator("#home-area")
+    area.focus()
+    area.press("ArrowDown")
+    area.press("s")
+    area.press("a")
+    area.press("v")
+    area.press("Enter")
+    expect(page.locator('select[name="area"]')).to_have_value("area-savassi")
+    page.locator("#home-type").click()
+    page.get_by_role("option",name="Apartamento",exact=True).click()
+    page.locator(".search-submit").hover()
+    expect(page.locator(".search-submit .action-frame")).to_have_attribute("data-action-ready","")
+    assert "stroke" in (page.locator(".search-submit [data-action-trace]").get_attribute("style") or "")
+    page.screenshot(path=str(OUT/"search-desktop.png"),timeout=60000)
+    page.get_by_role("button",name="Encontrar meu lugar",exact=True).click()
+    page.wait_for_url("**/?**")
+    expect(page.locator("#selecao .property-card")).to_have_count(1)
+    expect(page.locator("#selecao .property-location")).to_contain_text("Savassi")
+    page.locator("#home-area").scroll_into_view_if_needed()
+    page.locator("#home-area").click()
+    page.get_by_role("option",name="Santo Antônio",exact=True).click()
+    page.get_by_role("button",name="Encontrar meu lugar",exact=True).click()
+    expect(page.locator("#selecao .property-card")).to_have_count(0)
+    expect(page.get_by_role("heading",name="Vamos ampliar o olhar?")).to_be_visible()
+    print("Pointer/keyboard selections, submitted values and empty state: OK",flush=True)
+
+    page.goto(BASE+"/imoveis",wait_until="domcontentloaded")
+    expect(page.locator("#catalogo .property-card")).to_have_count(5)
+    expect(page.locator("#catalogo")).to_contain_text("Vila da Serra, Nova Lima")
+    assert "São Paulo" not in page.locator("body").inner_text()
+    page.goto(BASE,wait_until="domcontentloaded")
+    page.wait_for_timeout(6500)
+    for section in page.locator("main section").all():
+        section.scroll_into_view_if_needed()
+        page.wait_for_timeout(1400)
+    for img in page.locator(".property-card img,.advisor-photo img,.owner-art img").all():
+        img.scroll_into_view_if_needed()
+        page.wait_for_function("(src)=>[...document.images].some(img=>img.getAttribute('src')===src && img.complete && img.naturalWidth>0)",arg=img.get_attribute("src"),timeout=60000)
+        page.wait_for_timeout(1100)
+    ratios = page.locator(".property-image").evaluate_all("els=>els.map(el=>el.clientWidth/el.clientHeight)")
+    assert all(abs(ratio-.8)<.01 for ratio in ratios),ratios
+    assert page.locator(".owner-art").evaluate("el=>Math.abs(el.getBoundingClientRect().right-document.documentElement.clientWidth)")<2
+    expect(page.locator('[data-count-value="140"]')).to_have_text("140")
+    page.locator("#proprietarios").scroll_into_view_if_needed()
+    page.screenshot(path=str(OUT/"owner-desktop.png"),timeout=60000)
+    page.locator("#selecao").scroll_into_view_if_needed()
+    page.wait_for_timeout(1400)
+    page.screenshot(path=str(OUT/"cards-desktop.png"),timeout=60000)
+    page.evaluate("scrollTo({top:0,behavior:'instant'})")
+    page.wait_for_timeout(600)
+    page.screenshot(path=str(OUT/"home-complete.png"),full_page=True,timeout=120000)
+    print("Catalog geography, framing, owner bleed and full Home: OK",flush=True)
+    context.close()
+
+    for reduced in ["no-preference","reduce"]:
+        context = browser.new_context(**p.devices["iPhone 13"],reduced_motion=reduced)
+        small = context.new_page()
+        small.on("pageerror",lambda error: errors.append(str(error)))
+        small.goto(BASE,wait_until="domcontentloaded",timeout=120000)
+        small.wait_for_timeout(6500)
+        assert small.evaluate("Math.abs(document.querySelector('.hero').getBoundingClientRect().height-innerHeight)<1")
+        assert small.evaluate("document.documentElement.scrollWidth<=innerWidth")
+        small.screenshot(path=str(OUT/("hero-mobile-"+reduced+".png")),timeout=60000)
+        small.locator("#home-area").scroll_into_view_if_needed()
+        small.locator("#home-area").click()
+        expect(small.get_by_role("listbox")).to_be_visible()
+        assert small.evaluate("document.documentElement.scrollWidth<=innerWidth")
+        small.screenshot(path=str(OUT/("dropdown-mobile-"+reduced+".png")),timeout=60000)
+        small.get_by_role("option",name="Vila da Serra · Nova Lima",exact=True).click()
+        expect(small.locator('select[name="area"]')).to_have_value("area-vila-da-serra")
+        small.get_by_role("button",name="Encontrar meu lugar",exact=True).click()
+        expect(small.locator("#selecao .property-card")).to_have_count(1)
+        expect(small.locator("#selecao")).to_contain_text("Vila da Serra, Nova Lima")
+        small.get_by_role("button",name="Abrir menu",exact=True).click()
+        small.get_by_role("dialog",name="Menu principal").get_by_role("link",name="Imóveis",exact=True).click()
+        small.wait_for_url("**/imoveis")
+        print("Mobile",reduced,": OK",flush=True)
+        context.close()
+
+    context = browser.new_context(java_script_enabled=False,viewport={"width":390,"height":844})
+    plain = context.new_page()
+    plain.goto(BASE,wait_until="domcontentloaded",timeout=120000)
+    expect(plain.locator("#home-purpose")).to_be_visible()
+    plain.locator('select[name="purpose"]').select_option("RENT")
+    plain.locator('select[name="area"]').select_option("area-savassi")
+    plain.get_by_role("button",name="Encontrar meu lugar",exact=True).click()
+    expect(plain.locator("#selecao .property-card")).to_have_count(1)
+    expect(plain.locator("#home-title")).to_be_visible()
+    context.close()
+    browser.close()
+    assert not errors,errors
+    (OUT/"checks.json").write_text(json.dumps({"status":"passed","javascript_errors":errors,"geometry":geometry,"ratios":ratios,"mobile":"emulated, both preferences","native_fallback":"passed"},indent=2),encoding="utf-8")
+    print("Native no-JS search: OK. Browser errors:",errors,flush=True)

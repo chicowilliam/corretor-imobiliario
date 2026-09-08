@@ -5,7 +5,7 @@ import { PropertyCard } from "@/components/property/PropertyCard";
 import type { Property } from "@/types/property";
 import { ListingSequence } from "@/components/motion/ListingSequence";
 
-const imageSizes = "(max-width: 767px) 78vw, (max-width: 1200px) 36vw, 430px";
+const imageSizes = "(max-width: 767px) 78vw, (max-width: 1200px) 30vw, 385px";
 
 export function SelectedListings({ properties, hasSearch, whatsapp }: { properties: Property[]; hasSearch: boolean; whatsapp: string | null }) {
   return <section id="selecao" className="selected-section section-space" aria-labelledby="selected-heading"><div className="shell">

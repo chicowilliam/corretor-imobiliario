@@ -11,6 +11,8 @@ export function validateMocks(data: { agents: Agent[]; areas: Area[]; properties
   for (const property of data.properties) {
     if (!data.agents.some((agent) => agent.id === property.agentId)) throw new Error(`Unknown agent: ${property.id}`);
     if (property.areaId && !data.areas.some((area) => area.id === property.areaId)) throw new Error(`Unknown area: ${property.id}`);
+    const location = data.areas.find(area => area.id === property.areaId);
+    if (location && (property.city !== location.city || property.neighborhood !== location.name || property.address.state !== location.state)) throw new Error(`Inconsistent mock geography: ${property.id}`);
     if (property.priceVisibility === "ON_REQUEST" && property.price !== null) throw new Error(`Private price exposed: ${property.id}`);
     if (property.price !== null && (!Number.isSafeInteger(property.price) || property.price <= 0)) throw new Error(`Invalid price: ${property.id}`);
     if (property.area <= 0 || (property.suites ?? 0) > (property.bedrooms ?? 0)) throw new Error(`Invalid property facts: ${property.id}`);

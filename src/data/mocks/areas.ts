@@ -1,37 +1,24 @@
 import type { Area, NearbyPlace } from "@/types/area";
+import type { ImageAsset } from "@/types/shared";
 import { media } from "./media";
 
-function place(id: string, name: string, category: NearbyPlace["category"]): NearbyPlace {
-  return { id, name, category, location: null, distanceMeters: null, travelMinutes: null, travelMode: null };
+function area(slug: string, name: string, description: string, heroImage: ImageAsset, places: [string, NearbyPlace["category"]][], city = "Belo Horizonte"): Area {
+  return {
+    id: `area-${slug}`, slug, name, city, state: "MG", description,
+    highlights: [], heroImage, gallery: [], map: null,
+    nearbyPlaces: places.map(([name, category], index) => ({ id: `${slug}-${index}`, name, category, location: null, distanceMeters: null, travelMinutes: null, travelMode: null })),
+    seo: { title: `${name}, ${city} — Tomás Avelar`, description, socialImage: heroImage, noIndex: true },
+  };
 }
 
+// Real geography; photographs and residential scenarios remain illustrative.
+// Distances are deliberately absent without an actual property address.
 export const areas: Area[] = [
-  {
-    id: "area-jardins", slug: "jardins", name: "Jardins", city: "São Paulo", state: "SP",
-    description: "Ruas arborizadas, casas com história e uma vida cultural que se descobre a pé.",
-    highlights: ["Arquitetura", "Cultura", "Ruas arborizadas"], heroImage: media.interior, gallery: [], map: null,
-    nearbyPlaces: [place("jardins-culture", "Galerias de arte da região", "CULTURE"), place("jardins-shopping", "Comércio de bairro", "SHOPPING")],
-    seo: { title: "Jardins — Tomás Avelar", description: "Um olhar sobre a arquitetura e a vida nos Jardins.", socialImage: media.interior, noIndex: true },
-  },
-  {
-    id: "area-pinheiros", slug: "alto-de-pinheiros", name: "Alto de Pinheiros", city: "São Paulo", state: "SP",
-    description: "Casas abertas para o verde e um ritmo mais tranquilo dentro da cidade.",
-    highlights: ["Jardins", "Vida ao ar livre", "Casas"], heroImage: media.courtyard, gallery: [], map: null,
-    nearbyPlaces: [place("pinheiros-park", "Parque Villa-Lobos", "PARK"), place("pinheiros-dining", "Cafés da vizinhança", "DINING")],
-    seo: { title: "Alto de Pinheiros — Tomás Avelar", description: "Casas e jardins em Alto de Pinheiros.", socialImage: media.courtyard, noIndex: true },
-  },
-  {
-    id: "area-itaim", slug: "itaim-bibi", name: "Itaim Bibi", city: "São Paulo", state: "SP",
-    description: "A conveniência da vida urbana, entre bons restaurantes e espaços para respirar.",
-    highlights: ["Gastronomia", "Vida urbana", "Apartamentos"], heroImage: media.terrace, gallery: [], map: null,
-    nearbyPlaces: [place("itaim-park", "Parque do Povo", "PARK"), place("itaim-dining", "Restaurantes do bairro", "DINING")],
-    seo: { title: "Itaim Bibi — Tomás Avelar", description: "Um olhar sobre a vida no Itaim Bibi.", socialImage: media.terrace, noIndex: true },
-  },
-  {
-    id: "area-vila", slug: "vila-madalena", name: "Vila Madalena", city: "São Paulo", state: "SP",
-    description: "Ateliês, cafés e uma arquitetura que deixa espaço para a personalidade.",
-    highlights: ["Arte", "Cafés", "Vida de bairro"], heroImage: media.loft, gallery: [], map: null,
-    nearbyPlaces: [place("vila-culture", "Ateliês e galerias locais", "CULTURE"), place("vila-transit", "Estação Vila Madalena", "TRANSIT")],
-    seo: { title: "Vila Madalena — Tomás Avelar", description: "Arquitetura e vida de bairro na Vila Madalena.", socialImage: media.loft, noIndex: true },
-  },
+  area("cidade-jardim", "Cidade Jardim", "Casas, jardins maduros e a memória residencial de Belo Horizonte. Um bairro para olhar a arquitetura de perto.", media.interior, [["Museu Histórico Abílio Barreto", "CULTURE"]]),
+  area("lourdes", "Lourdes", "Apartamentos amplos, restaurantes e a vida cultural do entorno da Praça da Liberdade.", media.apartment, [["Praça da Liberdade", "CULTURE"], ["Restaurantes de Lourdes", "DINING"]]),
+  area("belvedere", "Belvedere", "Casas e apartamentos na paisagem de relevo da região Centro-Sul, com o horizonte da serra como referência.", media.courtyard, [["BH Shopping", "SHOPPING"]]),
+  area("savassi", "Savassi", "Esquinas vivas, cafés e espaços culturais. A cidade acontece na escala de uma caminhada pelo bairro.", media.loft, [["Praça Diogo de Vasconcelos", "CULTURE"], ["Cafés da Savassi", "DINING"]]),
+  area("santo-antonio", "Santo Antônio", "Ruas em diferentes cotas, comércio de vizinhança e edifícios que abrem novas perspectivas sobre a cidade.", media.terrace, [["Comércio da Rua Leopoldina", "SHOPPING"]]),
+  area("mangabeiras", "Mangabeiras", "Casas ao pé da Serra do Curral, perto da paisagem preservada do Parque das Mangabeiras. A topografia participa do projeto.", media.hero, [["Parque das Mangabeiras", "PARK"], ["Parque da Serra do Curral", "PARK"]]),
+  area("vila-da-serra", "Vila da Serra", "Em Nova Lima, na continuidade metropolitana de Belo Horizonte: apartamentos contemporâneos e um horizonte de montanhas.", media.apartment, [["Comércio da Alameda Oscar Niemeyer", "SHOPPING"]], "Nova Lima"),
 ];

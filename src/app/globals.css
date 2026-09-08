@@ -5,6 +5,7 @@
 @import "../styles/cinematic.css";
 @import "../styles/polish.css";
 @import "../styles/continuity.css";
+@import "../styles/contact.css";
 
 * { box-sizing: border-box; }
 html { scroll-padding-top: 116px; }

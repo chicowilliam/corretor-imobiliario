@@ -19,7 +19,7 @@ export function PropertyPreviewContent({ property, whatsapp }: { property: Prope
         <p className="my-5 text-[13px] leading-7 text-muted">{property.description}</p>
         <p className="mb-6 text-lg">{propertyPrice(property)}</p>
         {property.purpose === "RENT" ? <p className="mb-6 text-xs text-muted">Condomínio e IPTU não incluídos no valor da locação.</p> : null}
-        {contact ? <ContactPanel whatsapp={whatsapp} message={`Olá, Tomás! Tenho interesse no imóvel “${property.title}” (${property.reference}), em ${property.neighborhood}. Gostaria de conversar sobre uma visita.`} /> :
+        {contact ? <ContactPanel propertyTitle={property.title} whatsapp={whatsapp} message={`Olá, Tomás! Tenho interesse no imóvel “${property.title}” (${property.reference}), em ${property.neighborhood}. Gostaria de conversar sobre uma visita.`} /> :
           <button type="button" className="solid-button" onClick={() => setContact(true)}><ButtonContent icon={<ArrowUpRight size={16} />}>Conversar sobre este imóvel</ButtonContent></button>}
         <p className="mt-6 border-t border-line pt-4 text-[10px] leading-5 text-muted">Imóvel e valores fictícios. Fotografias de referência; não representam uma oferta real.</p>
       </div></>;

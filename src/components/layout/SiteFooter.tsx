@@ -1,6 +1,8 @@
 import { SiteLink as Link } from "@/components/ui/SiteLink";
 import { ContactCTA } from "@/components/lead/ContactCTA";
 import { Reveal } from "@/components/motion/Reveal";
+import { Instagram } from "lucide-react";
+import { demoSocial } from "@/data/mocks/social";
 
 export function SiteFooter() {
   return <footer id="contato" className="shell">
@@ -10,6 +12,7 @@ export function SiteFooter() {
       <nav aria-label="Navegação do rodapé" className="flex flex-col gap-1 text-xs"><Link className="py-2" href="/imoveis">Imóveis</Link><Link className="py-2" href="/#selecao">Seleção</Link><Link className="py-2" href="/#sobre">Meu olhar</Link><Link className="py-2" href="/#proprietarios">Para proprietários</Link></nav>
     </div>
     <div className="footer-bottom">
+      <a href={demoSocial.instagramUrl} target="_blank" rel="noopener noreferrer" className="text-link" aria-label={`Instagram ${demoSocial.instagramHandle}, perfil demonstrativo`}><Instagram size={18} aria-hidden="true" />{demoSocial.instagramHandle}</a>
       <p>© 2026 Tomás Avelar · Portfólio demonstrativo.</p>
       <p className="max-w-xl">Perfil, imóveis, métricas e depoimentos fictícios. Fotografias ilustrativas.<br />Sem CRECI ou atendimento comercial ativo. Nenhum dado pessoal é enviado por este site.</p>
     </div>

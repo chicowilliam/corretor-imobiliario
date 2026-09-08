@@ -1,0 +1,51 @@
+/* Shared space and reading direction, without another scroll controller. */
+.site-header { transition: transform .32s cubic-bezier(.22,1,.36,1); }
+.site-header[data-hidden="true"]:not(:focus-within) { transform: translateY(-105%); }
+.site-header .header-glass { background: var(--ivory); backdrop-filter: none; -webkit-backdrop-filter: none; }
+.home-content .selected-section { border-block: 0; background: linear-gradient(var(--ivory), var(--paper) 55%, var(--ivory)); }
+.home-content #sobre { padding-top: clamp(2rem, 4vw, 4rem); padding-bottom: clamp(3rem, 5vw, 5rem); }
+.home-content .owner-section { background: linear-gradient(var(--ivory), var(--paper) 35%, var(--paper) 80%, var(--ivory)); }
+.home-content .owner-section + section { padding-top: clamp(2rem, 4vw, 4rem); }
+.home-content #colecao-privada { padding-top: 1.5rem; }
+.home-content .advisor-layout { align-items: start; grid-template-columns: minmax(0, .95fr) minmax(0, 1.1fr); }
+.advisor-layout > * { min-width: 0; }
+.advisor-layout > figure { position: sticky; top: 116px; align-self: start; }
+.advisor-layout .advisor-photo { height: min(66dvh, 650px); }
+.advisor-story { padding-top: 3rem; }
+.story-phrase { font-family: var(--font-editorial), Georgia, serif; font-size: clamp(26px, 2.5vw, 38px); line-height: 1.3; letter-spacing: -.02em; max-width: 26ch; padding-block: 1rem clamp(3.5rem, 10dvh, 7rem); }
+.selected-section .editorial-listings { grid-template-columns: 1.16fr .84fr; align-items: start; gap: clamp(32px, 5vw, 70px); }
+.selected-section .editorial-listings > .property-card:nth-child(even) { margin-top: clamp(72px, 12vw, 180px); }
+.selected-section .editorial-listings > .property-card:last-child:nth-child(odd):not(:first-child) { grid-column: 1 / -1; width: 64%; justify-self: center; }
+.selected-section .property-card .property-card-depth { padding: 0 0 18px; background: transparent; border: 0; box-shadow: none; }
+.selected-section .property-card .property-image { aspect-ratio: 4 / 5; }
+.cursor-context { position: absolute; left: 21px; top: 13px; font-family: var(--font-interface), sans-serif; font-size: 10px; font-weight: 500; letter-spacing: .06em; white-space: nowrap; }
+.count-up { font-family: var(--font-interface), sans-serif; font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; letter-spacing: -.025em; }
+.counter-wheels { display: none; height: 1em; overflow: hidden; vertical-align: baseline; }
+.count-up[data-rolling] .counter-wheels { display: inline-flex; }
+.count-up[data-rolling] .counter-final { display: none; }
+.counter-wheel { display: inline-block; height: 1em; overflow: hidden; }
+.counter-strip { display: flex; flex-direction: column; }
+.counter-strip > span { display: block; height: 1em; line-height: 1; }
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .property-image:hover .card-media { transform: translateY(-5px) scale(1.035); }
+}
+@media (max-width: 767px) {
+  .home-content .advisor-layout { grid-template-columns: minmax(0, .42fr) minmax(0, .58fr); gap: 20px; }
+  .advisor-layout > figure { top: 94px; }
+  .advisor-layout .advisor-photo { height: auto; aspect-ratio: .72; }
+  .advisor-layout .section-title { font-size: clamp(26px, 6.8vw, 36px); }
+  .advisor-story { padding-top: 1.5rem; }
+  .story-phrase { font-size: clamp(21px, 5.3vw, 29px); padding-bottom: 3rem; }
+  .advisor-layout .count-up { font-size: 26px; min-width: 0 !important; }
+  .advisor-layout .flex.gap-10 { gap: 16px; flex-wrap: wrap; }
+  .selected-section .editorial-listings { grid-template-columns: 1fr; gap: 3rem; }
+  .selected-section .editorial-listings > .property-card:nth-child(even) { margin-top: 0; width: 90%; justify-self: end; }
+  .selected-section .editorial-listings > .property-card:last-child:nth-child(odd):not(:first-child) { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-header { transition: none; }
+  .advisor-layout > figure { position: relative; top: auto; }
+  .story-phrase { opacity: 1 !important; transform: none !important; }
+  .counter-wheels { display: none !important; }
+  .count-up .counter-final { display: inline !important; }
+}

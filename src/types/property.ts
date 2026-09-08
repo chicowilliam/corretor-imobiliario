@@ -35,6 +35,7 @@ export interface Property {
   reference: string;
   slug: string;
   title: string;
+  name: string;
   excerpt: string;
   description: string;
   status: PropertyStatus;

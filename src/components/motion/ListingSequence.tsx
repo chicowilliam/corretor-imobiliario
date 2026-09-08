@@ -3,7 +3,7 @@
 import { useLayoutEffect, type ReactNode } from "react";
 import { useAnimate } from "motion/react";
 
-export function ListingSequence({ children }: { children: ReactNode }) {
+export function ListingSequence({ children, horizontal = false }: { children: ReactNode; horizontal?: boolean }) {
   const [scope, animate] = useAnimate<HTMLDivElement>();
   useLayoutEffect(() => {
     const root = scope.current;
@@ -39,5 +39,5 @@ export function ListingSequence({ children }: { children: ReactNode }) {
       preference.removeEventListener("change", clear);
     };
   }, [animate, scope, children]);
-  return <div ref={scope} className="editorial-listings">{children}</div>;
+  return <div ref={scope} className="editorial-listings" tabIndex={horizontal ? 0 : undefined} role={horizontal ? "region" : undefined} aria-label={horizontal ? "Seleção de imóveis, role horizontalmente para explorar" : undefined} data-lenis-prevent={horizontal ? "true" : undefined}>{children}</div>;
 }

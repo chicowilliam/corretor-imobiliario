@@ -19,21 +19,28 @@ export function HeroVideo({ src, poster, objectPosition, children }: { src: stri
     const image = video.parentElement?.querySelector("img");
     const edge = video.closest(".hero-chapter")?.nextElementSibling?.querySelector(".hero-exit-edge");
     // Reuse the responsive, preloaded poster instead of fetching the raw file again.
-    const syncPoster = () => { video.poster = image?.currentSrc || poster; };
+    const syncPoster = () => {
+      video.poster = image?.currentSrc || poster;
+      const veil = video.parentElement?.querySelector<HTMLElement>(".hero-soft-veil");
+      if (veil) { veil.style.backgroundImage = `url("${video.poster}")`; veil.style.backgroundPosition = objectPosition ?? "center"; }
+    };
     syncPoster();
     image?.addEventListener("load", syncPoster);
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
     let visible = true;
+    let playPending = false;
     let covered = edge ? edge.getBoundingClientRect().bottom <= 0 : false;
     function sync() {
       if (!video) return;
       const staticOnly = media.matches || Boolean((navigator as ConnectionNavigator).connection?.saveData);
       setReduced(staticOnly);
       if (staticOnly) { video.pause(); if (video.getAttribute("src")) { video.removeAttribute("src"); video.load(); } return; }
-      if (!visible || covered || document.hidden || pausedByUser.current) { video.pause(); return; }
+      if (!visible || covered || document.hidden || document.body.style.overflow === "hidden" || pausedByUser.current) { video.pause(); return; }
       if (!video.getAttribute("src")) { video.src = src; video.load(); }
-      if (visible && !document.hidden && !pausedByUser.current) void video.play().catch(() => { setPlaying(false); });
-      else video.pause();
+      if (video.paused && !playPending) {
+        playPending = true;
+        void video.play().catch(() => { setPlaying(false); }).finally(() => { playPending = false; });
+      }
     }
     const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); }, { threshold: 0.05 });
     observer.observe(video);
@@ -41,9 +48,11 @@ export function HeroVideo({ src, poster, objectPosition, children }: { src: stri
     if (edge) coverage.observe(edge);
     media.addEventListener("change", sync);
     document.addEventListener("visibilitychange", sync);
+    const lock = new MutationObserver(sync);
+    lock.observe(document.body, { attributes: true, attributeFilter: ["style"] });
     sync();
-    return () => { observer.disconnect(); coverage.disconnect(); image?.removeEventListener("load", syncPoster); media.removeEventListener("change", sync); document.removeEventListener("visibilitychange", sync); video.pause(); };
-  }, [src, poster]);
+    return () => { lock.disconnect(); observer.disconnect(); coverage.disconnect(); image?.removeEventListener("load", syncPoster); media.removeEventListener("change", sync); document.removeEventListener("visibilitychange", sync); video.pause(); };
+  }, [src, poster, objectPosition]);
 
   return <>
     <div className="hero-media" data-hero-media>

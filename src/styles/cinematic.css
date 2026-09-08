@@ -6,7 +6,7 @@
 .hero-opening { position: absolute; inset: 0; z-index: 25; display: none; place-content: center; justify-items: center; gap: 18px; background: rgb(25 28 24 / .25); color: var(--ivory); pointer-events: none; }
 .hero[data-opening] .hero-opening { display: grid; }
 .hero[data-opening] :is(.hero-title, .hero-copy, .hero-cta-mask, .hero-eyebrow) { visibility: hidden; }
-.hero[data-opening] .hero-soft-veil { opacity: 1; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.hero[data-opening] .hero-soft-veil { opacity: 1; background-size: cover; filter: blur(6px); transform: scale(1.025); }
 .opening-wordmark { display: block; width: min(76vw, 600px); height: auto; overflow: visible; }
 .opening-wordmark path { fill: currentColor; fill-opacity: 0; stroke: currentColor; stroke-width: .6; stroke-linecap: round; stroke-linejoin: round; }
 .hero-opening-caption { font-size: 8px; letter-spacing: .3em; text-transform: uppercase; }

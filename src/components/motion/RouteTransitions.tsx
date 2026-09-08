@@ -26,6 +26,8 @@ export function RouteTransitions() {
       if (preference.matches || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.detail === 0) return;
       const link = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>("a[href]") : null;
       if (!link || link.hasAttribute("download") || (link.target && link.target !== "_self")) return;
+      // The mobile menu owns its exit and navigation as one short sequence.
+      if (link.closest(".mobile-nav")) return;
       const url = new URL(link.href, location.href);
       if (url.origin !== location.origin || url.pathname === location.pathname) return;
       event.preventDefault();

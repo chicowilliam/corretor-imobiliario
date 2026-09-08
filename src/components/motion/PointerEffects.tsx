@@ -4,6 +4,13 @@ import { useEffect, useRef } from "react";
 import { m as motion, useMotionValue, useSpring } from "motion/react";
 import { subscribeMotionEvent } from "@/lib/motion-events";
 
+function cursorContext(target: Element) {
+  if (target.closest(".property-card")) return "EXPLORAR ↗";
+  if (target.closest("a, button")) return "→";
+  if (target.closest("img, .advisor-photo, .advisor-editorial-photo, .feature-photo, .owner-art")) return "VER";
+  return "";
+}
+
 export function PointerEffects() {
   const label = useRef<HTMLSpanElement>(null);
   const active = useRef<HTMLElement | null>(null);
@@ -21,6 +28,7 @@ export function PointerEffects() {
     const preference = matchMedia("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
     let pointerFrame = 0;
     let pendingPointer: PointerEvent | null = null;
+    let magnetFrame = 0;
     const clearMagnet = () => {
       if (!active.current && targetX.get() === 0 && targetY.get() === 0) return;
       active.current?.style.removeProperty("transform");
@@ -30,7 +38,11 @@ export function PointerEffects() {
     };
     const hide = () => { cancelAnimationFrame(pointerFrame); pointerFrame = 0; pendingPointer = null; opacity.set(0); document.documentElement.removeAttribute("data-custom-cursor"); clearMagnet(); };
     const drawMagnet = () => {
-      if (active.current) active.current.style.transform = `translate3d(${magnetX.get()}px, ${magnetY.get()}px, 0)`;
+      if (magnetFrame) return;
+      magnetFrame = requestAnimationFrame(() => {
+        magnetFrame = 0;
+        if (active.current) active.current.style.transform = `translate3d(${magnetX.get()}px, ${magnetY.get()}px, 0)`;
+      });
     };
     const unsubscribeX = magnetX.on("change", drawMagnet);
     const unsubscribeY = magnetY.on("change", drawMagnet);
@@ -40,8 +52,9 @@ export function PointerEffects() {
       if (!target || target.closest("input, textarea, select, [contenteditable], dialog")) { hide(); return; }
       x.set(event.clientX); y.set(event.clientY); opacity.set(1);
       if (!document.documentElement.hasAttribute("data-custom-cursor")) document.documentElement.setAttribute("data-custom-cursor", "true");
-      scale.set(target.closest("a, button") ? 1.65 : 1);
-      const context = target.closest(".property-card") ? "EXPLORAR ↗" : target.closest("a, button") ? "→" : target.closest("img, .advisor-photo, .feature-photo, .owner-art") ? "VER" : "";
+      const interactive = target.closest("a, button");
+      scale.set(interactive ? 1.65 : 1);
+      const context = cursorContext(target);
       if (label.current && label.current.textContent !== context) label.current.textContent = context;
       // Preserve the already validated header/hero interactions.
       const button = target.closest<HTMLElement>(".solid-button");
@@ -77,7 +90,7 @@ export function PointerEffects() {
     const stops = [subscribeMotionEvent("keydown", keyboard), subscribeMotionEvent("visibilitychange", hide), subscribeMotionEvent("scroll", clearMagnet)];
     window.addEventListener("blur", hide);
     return () => {
-      hide(); unsubscribeX(); unsubscribeY();
+      hide(); cancelAnimationFrame(magnetFrame); unsubscribeX(); unsubscribeY();
       preference.removeEventListener("change", syncPointer);
       document.removeEventListener("pointermove", queueMove);
       document.removeEventListener("pointerout", exit);

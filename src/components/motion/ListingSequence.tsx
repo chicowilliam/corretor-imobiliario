@@ -23,7 +23,7 @@ export function ListingSequence({ children, horizontal = false }: { children: Re
       entries.filter((entry) => entry.isIntersecting)
         .sort((a, b) => cards.indexOf(a.target as HTMLElement) - cards.indexOf(b.target as HTMLElement))
         .forEach((entry, index) => reveal(entry.target as HTMLElement, index * 0.16));
-    }, { threshold: 0.08 });
+    }, { threshold: 0.08, rootMargin: "0px 0px -4% 0px" });
     cards.forEach((card) => observer.observe(card));
     const clear = () => {
       observer.disconnect();
@@ -38,6 +38,7 @@ export function ListingSequence({ children, horizontal = false }: { children: Re
       root.removeEventListener("focusin", clear);
       preference.removeEventListener("change", clear);
     };
-  }, [animate, scope, children]);
+    // Parent remounts with a stable key when the curated set changes.
+  }, [animate, scope]);
   return <div ref={scope} className="editorial-listings" tabIndex={horizontal ? 0 : undefined} role={horizontal ? "region" : undefined} aria-label={horizontal ? "Seleção de imóveis, role horizontalmente para explorar" : undefined} data-lenis-prevent={horizontal ? "true" : undefined}>{children}</div>;
 }

@@ -1,0 +1,66 @@
+/* The same two strokes describe both states; CSS retargets interrupted gestures. */
+.menu-strokes { position: relative; display: block; width: 27px; height: 22px; }
+.menu-strokes > span { position: absolute; left: 1px; top: 10px; width: 25px; height: 1px; background: currentColor; transform: translateY(-4px); transition: transform 300ms cubic-bezier(.22,1,.36,1); }
+.menu-strokes > span:last-child { transform: translate(3.5px, 4px) scaleX(.72); transform-origin: center; }
+.mobile-nav.mobile-nav[open] { animation: none; opacity: 0; transform: translateY(-6px); transition: opacity 180ms ease, transform 280ms cubic-bezier(.22,1,.36,1); }
+.mobile-nav.mobile-nav[data-phase="open"] { opacity: 1; transform: translateY(0); }
+.mobile-nav.mobile-nav[data-phase="closing"] { opacity: 0; transform: translateY(-4px); transition-duration: 180ms; }
+.mobile-nav .mobile-nav-close { width: auto; min-width: 76px; border: 0; border-radius: 0; }
+.mobile-nav[data-phase="open"] .menu-strokes > span { transform: rotate(45deg); }
+.mobile-nav[data-phase="open"] .menu-strokes > span:last-child { transform: rotate(-45deg); transform-origin: center; }
+.mobile-nav .mobile-nav-links a { opacity: 0; transform: translateY(9px); transition: transform 260ms cubic-bezier(.22,1,.36,1), opacity 200ms ease; }
+.mobile-nav[data-phase="open"] .mobile-nav-links a { opacity: 1; transform: translateY(0); transition-delay: calc(var(--menu-index, 0) * 24ms); }
+.mobile-nav-links a:nth-child(2) { --menu-index: 1; }
+.mobile-nav-links a:nth-child(3) { --menu-index: 2; }
+.mobile-nav-links a:nth-child(4) { --menu-index: 3; }
+.mobile-nav-links a:nth-child(5) { --menu-index: 4; }
+.mobile-nav .mobile-nav-bottom { opacity: 0; transform: translateY(6px); transition: opacity 180ms ease, transform 240ms ease; }
+.mobile-nav[data-phase="open"] .mobile-nav-bottom { opacity: 1; transform: none; transition-delay: 100ms; }
+.mobile-nav[data-phase="closing"] :is(.mobile-nav-links a,.mobile-nav-bottom) { transition-delay: 0ms; transition-duration: 130ms; }
+.mobile-nav .mobile-nav-links a:is(:active,[data-selected="true"]) { opacity: .55; transform: translateX(4px); transition-delay: 0ms; transition-duration: 80ms; }
+.mobile-nav[data-keyboard="true"], .mobile-nav[data-keyboard="true"] * { transition: none !important; }
+@media (max-width: 1199px) {
+  .mobile-nav.mobile-nav { padding-inline: var(--gutter); padding-top: max(16px, env(safe-area-inset-top)); }
+  .mobile-nav-top { min-height: 48px; }
+  .mobile-nav-brand { font-size: 25px; }
+  .mobile-nav .mobile-nav-links a { font-size: clamp(32px, 8.3vw, 52px); min-height: 54px; }
+  .mobile-nav-links { padding-block: clamp(24px, 5dvh, 56px); }
+  .mobile-nav-bottom { padding-bottom: env(safe-area-inset-bottom); }
+  .mobile-nav button:active { opacity: .65; }
+}
+@media (min-width: 768px) and (max-width: 1199px) {
+  .mobile-nav.mobile-nav { padding-top: max(26px, env(safe-area-inset-top)); }
+}
+@media (max-width: 767px) {
+  .home-content .section-title { font-size: clamp(40px, 11vw, 58px); line-height: 1.06; }
+  .hero-chapter .hero-copy { font-size: 14px; line-height: 1.75; max-width: 29ch; }
+  .home-content .feature-layout .feature-photo { margin-inline: calc(-1 * var(--gutter)); aspect-ratio: 4 / 5; }
+  .home-content .feature-copy { padding-top: 28px; }
+  .home-content .feature-copy h3 { font-size: clamp(38px, 11vw, 52px); }
+  .home-content .feature-copy > p:not(.property-price) { font-size: 14px; }
+  .home-content .owner-section .owner-art { aspect-ratio: 4 / 5; }
+  .home-content .owner-section .owner-art img { object-position: 50% 45%; }
+  .home-content #colecao-privada { padding-inline: 0; }
+  .home-content .private-layout { min-height: min(760px, 86svh); }
+  .home-content .private-content { padding: 48px var(--gutter); }
+  .home-content .private-content h2 { font-size: clamp(48px, 14vw, 68px); }
+  .home-content .private-content p { font-size: 14px; max-width: 28ch; }
+  .home-content :is(.text-link,.solid-button), footer .text-link { min-height: 48px; font-size: 12px; }
+  .home-content .quote-control { min-width: 48px; min-height: 48px; }
+  .home-content .text-link:active, footer .text-link:active { opacity: .65; }
+  .floating-whatsapp.floating-whatsapp { min-height: 48px; padding: 10px 14px; gap: 9px; border-radius: 2px; }
+  .floating-whatsapp .floating-whatsapp-label { display: block; font-size: 11px; }
+  .floating-whatsapp .floating-whatsapp-label small { display: none; }
+  .floating-whatsapp svg { width: 22px; height: 22px; }
+  .floating-whatsapp[data-inline-contact="true"]:not(:focus-within) { visibility: hidden; pointer-events: none; }
+  html { scroll-padding-bottom: 88px; }
+}
+@media (max-height: 560px) {
+  .mobile-nav .mobile-nav-links { padding-block: 16px; }
+  .mobile-nav .mobile-nav-links a { font-size: 28px; min-height: 44px; padding-block: 5px; }
+  .mobile-nav-links a:nth-child(3) { margin-top: 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mobile-nav.mobile-nav[open] { opacity: 1; transform: none; }
+  .mobile-nav .mobile-nav-links a, .mobile-nav .mobile-nav-bottom { opacity: 1; transform: none; }
+}

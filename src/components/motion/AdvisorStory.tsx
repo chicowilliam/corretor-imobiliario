@@ -12,10 +12,18 @@ export function AdvisorStory({ children }: { children: ReactNode }) {
       const root = ref.current;
       const query = gsap.matchMedia();
       query.add("(prefers-reduced-motion: no-preference)", () => {
-        root.querySelectorAll<HTMLElement>(".story-phrase").forEach(phrase => {
+        const phrases = gsap.utils.toArray<HTMLElement>(root.querySelectorAll(".story-phrase"));
+        phrases.forEach(phrase => {
           gsap.fromTo(phrase, { y: 18, opacity: .35 }, {
-            y: 0, opacity: 1, ease: "sine.out",
-            scrollTrigger: { trigger: phrase, start: "top 85%", end: "top 55%", scrub: .4 },
+            y: 0, opacity: 1, ease: "sine.out", force3D: true,
+            scrollTrigger: {
+              trigger: phrase,
+              start: "top 85%",
+              end: "top 55%",
+              scrub: .4,
+              // Keep progress work off-screen until the phrase is near the viewport.
+              fastScrollEnd: true,
+            },
           });
         });
       });

@@ -48,8 +48,11 @@ export function MotionProvider({ children }: { children: ReactNode }) {
       const observer = new MutationObserver(syncLock);
       observer.observe(document.body, { attributes: true, attributeFilter: ["style"] });
       document.addEventListener("visibilitychange", syncLock);
+      // Lenis already advances once per GSAP ticker frame; keep ScrollTrigger in that same cadence.
       lenis.on("scroll", ScrollTrigger.update);
-      gsap.ticker.lagSmoothing(0);
+      // Default lag smoothing avoids main-thread pile-up on weaker desktops without changing the calm lerp.
+      gsap.ticker.lagSmoothing(500, 33);
+      ScrollTrigger.config({ ignoreMobileResize: true, limitCallbacks: true });
       syncLock();
 
       refresh.current = () => {

@@ -1,13 +1,13 @@
 "use client";
 
 import { ActionFrame } from "@/components/motion/ActionFrame";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { SiteLink as Link } from "@/components/ui/SiteLink";
 import { usePathname } from "next/navigation";
 import { m as motion, useMotionValue, useMotionValueEvent, useScroll, useTransform, type MotionValue } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { ContactCTA } from "@/components/lead/ContactCTA";
-import { MobileNavigation } from "./MobileNavigation";
+import { MobileNavigation, MenuMark } from "./MobileNavigation";
 
 const links = [
   ["/imoveis", "Imóveis"], ["/#selecao", "Seleção"], ["/#sobre", "Meu olhar"],
@@ -30,7 +30,12 @@ export function SiteHeader() {
   const sceneEnd = useMotionValue(1000);
   const header = useRef<HTMLElement>(null);
   const travel = useRef(0);
-  const [hidden, setHidden] = useState(false);
+  const hidden = useRef(false);
+  const setHidden = (next: boolean) => {
+    if (hidden.current === next) return;
+    hidden.current = next;
+    header.current?.toggleAttribute("data-hidden", next);
+  };
   useMotionValueEvent(scrollY, "change", current => {
     const delta = current - (scrollY.getPrevious() ?? current);
     if (current < (home ? sceneEnd.get() : 120) || document.querySelector("dialog[open]") || header.current?.contains(document.activeElement)) {
@@ -50,7 +55,7 @@ export function SiteHeader() {
     measure();
     const observer = new ResizeObserver(measure);
     observer.observe(document.documentElement);
-    window.addEventListener("resize", measure);
+    window.addEventListener("resize", measure, { passive: true });
     return () => { observer.disconnect(); window.removeEventListener("resize", measure); };
   }, [home, sceneEnd]);
   const smooth = (value: number) => { const p = Math.min(1, Math.max(0, value)); return p * p * (3 - 2 * p); };
@@ -61,7 +66,7 @@ export function SiteHeader() {
   const ink = { dark, light };
 
   return <>
-    <header ref={header} className="site-header" data-hero-header={home} data-hidden={hidden} onFocusCapture={() => { travel.current = 0; setHidden(false); }}>
+    <header ref={header} className="site-header" data-hero-header={home} onFocusCapture={() => { travel.current = 0; setHidden(false); }}>
       <motion.div className="header-glass" style={{ opacity: glass }} aria-hidden="true" />
       <div className="shell header-inner flex h-full items-center justify-between gap-5">
         <Link href="/" className="wordmark" aria-label="Tomás Avelar — início">
@@ -76,7 +81,7 @@ export function SiteHeader() {
           <HeaderInk {...ink} className="header-contact-outline"><ActionFrame /></HeaderInk>
           <HeaderInk {...ink}>Vamos conversar</HeaderInk>
         </ContactCTA>
-        <MobileNavigation icon={<HeaderInk {...ink}><span className="menu-mark"><span>Menu</span><svg width="27" height="18" viewBox="0 0 27 18" fill="none" aria-hidden="true"><path d="M1 5H26M8 13H26" stroke="currentColor" strokeWidth="1" /></svg></span></HeaderInk>} />
+        <MobileNavigation icon={<HeaderInk {...ink}><MenuMark /></HeaderInk>} />
       </div>
     </header>
     {!home ? <div className="header-spacer" aria-hidden="true" /> : null}

@@ -16,6 +16,7 @@ export function HeroOpening({ children }: { children: ReactNode }) {
     const cta = root.querySelector<HTMLElement>(".hero-cta-mask");
     const label = root.querySelector<HTMLElement>(".hero-eyebrow");
     const focus = root.querySelector<HTMLElement>(".hero-focus-layer");
+    const soft = root.querySelector<HTMLElement>(".hero-soft-veil");
     if (!headline || !support || !cta || !focus) return;
     // Deep links, restored scroll, data saving and keyboard users never wait.
     if (preference.matches || connection.connection?.saveData || location.hash || scrollY > 80) return;
@@ -36,7 +37,7 @@ export function HeroOpening({ children }: { children: ReactNode }) {
       split?.revert();
       root.removeAttribute("data-opening");
       root.dataset.openingPhase = phase;
-      [headline, support, cta, label, focus, overlay].forEach(el => {
+      [headline, support, cta, label, focus, soft, overlay].forEach(el => {
         ["opacity", "visibility", "filter", "transform", "will-change"].forEach(prop => el?.style.removeProperty(prop));
       });
     };
@@ -60,7 +61,7 @@ export function HeroOpening({ children }: { children: ReactNode }) {
       context = gsap.context(() => {
         split = SplitText.create(headline, { type: "lines", mask: "lines", linesClass: "hero-split-line", aria: "auto" });
         gsap.set([headline, support, cta, label], { autoAlpha: 0 });
-        gsap.set(focus, { filter: "blur(6px)" });
+        if (soft) gsap.set(soft, { opacity: 1 });
         const paths = overlay.querySelectorAll("path");
         gsap.set(paths, { drawSVG: "0%", fillOpacity: 0 });
         root.dataset.openingPhase = "drawing";
@@ -90,7 +91,9 @@ export function HeroOpening({ children }: { children: ReactNode }) {
           })
           .call(() => { root.dataset.openingPhase = "focus"; })
           .to(overlay, { opacity: 0, duration: .48, ease: "power2.inOut" }, 1.2)
-          .to(focus, { filter: "blur(0px)", duration: .6, ease: "power2.out" }, 1.2)
+          .to(soft || focus, soft
+            ? { opacity: 0, duration: .6, ease: "power2.out" }
+            : { filter: "blur(0px)", duration: .6, ease: "power2.out" }, 1.2)
           .call(() => { root.dataset.openingPhase = "headline"; }, [], 1.85)
           .set(headline, { autoAlpha: 1 }, 1.85)
           .fromTo(split.lines, { yPercent: 110 }, { yPercent: 0, duration: .65, stagger: .12, ease: "power3.out" }, 1.85)

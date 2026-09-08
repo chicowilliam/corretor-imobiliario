@@ -87,9 +87,7 @@ Outras checagens: `npm run typecheck`, `npm run lint`, `npm test`, `npm run buil
   de métricas fictícias foi mantida.
 - `DepthReveal`: máscara estática com duas translações opostas e escala leve.
   Aguarda a foto carregar; nenhuma animação de clip-path ou dimensão.
-- `PointerEffects`: cursor por MotionValues, magnetismo limitado a 6px/4px
-  nos botões sólidos, sem alterar os efeitos já validados de Navbar/Hero.
-  Foco de teclado, inputs, diálogos, toque e movimento reduzido usam cursor nativo.
+- Cursor padrão do sistema (sem cursor customizado nem magnetismo de botões).
 - `interactions.css`: sublinhado da esquerda para a direita em todos os links,
   incluindo marca, menu mobile, rodapé e link de pular conteúdo. Os links da
   navegação desktop mantêm seu sistema já existente de duas camadas de tinta.

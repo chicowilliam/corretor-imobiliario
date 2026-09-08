@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-/** Separate paint layers: the exterior button remains owned by magnetism. */
+/** Separate paint layers keep the exterior button geometry stable. */
 export function ActionFrame() {
   const ref = useRef<HTMLSpanElement>(null);
   useEffect(() => {

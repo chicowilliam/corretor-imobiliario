@@ -8,6 +8,7 @@
 @import "../styles/contact.css";
 @import "../styles/advisor-editorial.css";
 @import "../styles/mobile-editorial.css";
+@import "../styles/scrollbar.css";
 
 * { box-sizing: border-box; }
 html { scroll-padding-top: 116px; }

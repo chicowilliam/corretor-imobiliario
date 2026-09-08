@@ -83,13 +83,11 @@ with sync_playwright() as p:
     tilt = card.locator('.property-card-depth').evaluate('el=>getComputedStyle(el).transform')
     assert tilt != 'none' and tilt.startswith('matrix3d'), tilt
     assert card.locator('.card-media').evaluate('el=>new DOMMatrix(getComputedStyle(el).transform).a') > 1.01
-    assert page.locator('html').get_attribute('data-custom-cursor') == 'true'
     page.screenshot(path=str(OUT/'cards-desktop.png'), caret='initial', timeout=120000)
     card.get_by_role('button').click()
     expect(page.get_by_role('dialog')).to_be_visible()
     page.keyboard.press('Escape')
-    assert page.locator('html').get_attribute('data-custom-cursor') is None
-    print('Tilt, zoom, stagger, crop and keyboard cursor fallback: OK', flush=True)
+    print('Tilt, zoom, stagger and crop: OK', flush=True)
 
     page.evaluate("""() => {
       window.countSamples = [];
@@ -109,18 +107,12 @@ with sync_playwright() as p:
     button = page.locator('.search-submit')
     button.scroll_into_view_if_needed()
     page.wait_for_timeout(400)
-    box = button.bounding_box()
-    page.mouse.move(box['x']+box['width']*.8, box['y']+box['height']*.65, steps=8)
-    page.wait_for_timeout(400)
-    assert button.evaluate('el=>Math.abs(new DOMMatrix(getComputedStyle(el).transform).m41)') > 1
-    page.keyboard.press('Tab')
-    assert button.evaluate('el=>getComputedStyle(el).transform') == 'none'
     missing = page.locator('a').evaluate_all("""links=>links.filter(link=> {
       return ![link, ...link.querySelectorAll('.header-ink-dark')].some(
         el=>getComputedStyle(el, '::after').content !== 'none');
     }).map(link=>link.textContent)""")
     assert not missing, missing
-    print('Counters, photo mask, magnetism and all link underlines: OK', flush=True)
+    print('Counters, photo mask and all link underlines: OK', flush=True)
 
     page.get_by_role('navigation', name='Navegação principal').get_by_role('link', name='Imóveis', exact=True).click()
     expect(page.locator('.route-veil')).to_be_visible()
@@ -191,7 +183,6 @@ with sync_playwright() as p:
     small.wait_for_timeout(1000)
     assert small.evaluate('document.documentElement.scrollWidth <= innerWidth')
     assert small.locator('.property-card-depth').first.evaluate('el=>getComputedStyle(el).transform') == 'none'
-    assert small.locator('.site-cursor').evaluate('el=>getComputedStyle(el).display') == 'none'
     assert all(float(v)==1 for v in small.locator('.property-card').evaluate_all('els=>els.map(el=>getComputedStyle(el).opacity)'))
     small.locator('.property-card').first.locator('img').evaluate("img => img.decode()")
     small.screenshot(path=str(OUT/'cards-mobile-reduced.png'), caret='initial', timeout=120000)

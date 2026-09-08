@@ -75,7 +75,7 @@
 .select-field[data-open="true"] .select-chevron { transform: rotate(180deg); }
 .select-panel { position: absolute; top: calc(100% + 14px); left: 18px; right: 18px; min-width: 210px; z-index: 20; overflow: hidden; background: var(--ivory); box-shadow: 0 12px 24px -12px rgb(30 30 20 / .25); border: 1px solid var(--line); }
 .select-field:first-child .select-panel { left: 0; }
-.select-options { max-height: min(42dvh, 285px); overflow-y: auto; overscroll-behavior: contain; padding: 6px; scrollbar-width: thin; }
+.select-options { max-height: min(42dvh, 285px); overflow-y: auto; overscroll-behavior: contain; padding: 6px; scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--accent) 42%, var(--paper)) var(--paper); }
 .select-options [role="option"] { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 44px; text-align: left; padding: 10px 12px; font-size: 12px; }
 .select-options [role="option"][data-active="true"] { background: var(--paper); }
 .select-options [role="option"][aria-selected="true"] { color: var(--accent-strong); font-weight: 600; }

@@ -4,7 +4,7 @@ import { ActionFrame } from "./ActionFrame";
 import { useEffect, useRef, type ReactNode } from "react";
 import { subscribeMotionEvent } from "@/lib/motion-events";
 
-/** Flip animates the content, leaving the button transform to the magnetic cursor. */
+/** Flip animates the label/icon width without resizing the exterior button. */
 export function ButtonContent({ children, icon }: { children: ReactNode; icon: ReactNode }) {
   const ref = useRef<HTMLSpanElement>(null);
   useEffect(() => {

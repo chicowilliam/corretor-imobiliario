@@ -14,25 +14,16 @@ a:where(:not(.desktop-nav a))::after, button.text-link::after {
 a.text-link, button.text-link { border-bottom-color: transparent; }
 a:where(:not(.desktop-nav a)):focus-visible::after, button.text-link:focus-visible::after { transform: scaleX(1); transition: none; }
 .site-header .wordmark::after { background: var(--ivory); mix-blend-mode: difference; }
-.site-cursor { position: fixed; top: 0; left: 0; z-index: 90; pointer-events: none; mix-blend-mode: difference; color: var(--ivory); }
-.cursor-ring { position: absolute; width: 28px; height: 28px; top: -14px; left: -14px; border: 1px solid currentColor; border-radius: 50%; }
-.cursor-dot { position: absolute; top: -2px; left: -2px; width: 4px; height: 4px; border-radius: 50%; background: currentColor; }
 .route-veil { position: fixed; inset: 0; z-index: 60; pointer-events: none; background: var(--ivory); display: grid; place-items: center; }
 .route-signature { font-family: var(--font-editorial), Georgia, serif; font-size: clamp(32px, 4vw, 48px); color: var(--ink); letter-spacing: .035em; }
 
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   a:where(:not(.desktop-nav a)):hover::after, button.text-link:hover::after { transform: scaleX(1); }
   .property-image:hover .card-media { transform: scale(1.035); }
-  html[data-custom-cursor="true"], html[data-custom-cursor="true"] :is(a, button) { cursor: none; }
-  html[data-custom-cursor="true"] :is(dialog, dialog *, input, textarea, select, [contenteditable]) { cursor: auto; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .site-cursor, .route-veil, .card-hover-video { display: none; }
+  .route-veil, .card-hover-video { display: none; }
   .property-card, .property-card-depth, .card-media, .depth-mask, .depth-image { transform: none !important; }
   .property-card { opacity: 1 !important; }
   a:where(:not(.desktop-nav a)):hover::after, button.text-link:hover::after { transform: scaleX(1); }
-}
-@media (hover: none), (pointer: coarse), (forced-colors: active) {
-  .site-cursor { display: none; }
-  html[data-custom-cursor="true"], html[data-custom-cursor="true"] :is(a, button) { cursor: auto; }
 }

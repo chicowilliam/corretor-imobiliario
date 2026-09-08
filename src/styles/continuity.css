@@ -6,12 +6,11 @@
 .home-content .owner-section { background: linear-gradient(var(--ivory), var(--paper) 35%, var(--paper) 80%, var(--ivory)); }
 .home-content .owner-section + section { padding-top: clamp(2rem, 4vw, 4rem); }
 .home-content #colecao-privada { padding-top: 1.5rem; }
-.selected-section .editorial-listings { display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: clamp(280px, 36vw, 430px); align-items: stretch; gap: 28px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; padding: 16px 8px 32px; margin-inline: -8px; scrollbar-width: thin; scrollbar-color: var(--accent) var(--line); }
+.selected-section .editorial-listings { display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: clamp(280px, 36vw, 430px); align-items: stretch; gap: 28px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; padding: 16px 8px 32px; margin-inline: -8px; scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--accent) 42%, var(--paper)) var(--paper); }
 .selected-section .editorial-listings > .property-card { min-width: 0; scroll-snap-align: start; }
 .selected-section .property-card-title { min-height: 2.6em; }
 .selected-section .property-card .property-card-depth { padding: 0 0 18px; background: transparent; border: 0; box-shadow: none; }
 .selected-section .property-card .property-image { aspect-ratio: 4 / 5; }
-.cursor-context { position: absolute; left: 21px; top: 13px; font-family: var(--font-interface), sans-serif; font-size: 10px; font-weight: 500; letter-spacing: .06em; white-space: nowrap; }
 .count-up { font-family: var(--font-interface), sans-serif; font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; letter-spacing: -.025em; }
 .counter-wheels { display: none; height: 1em; overflow: hidden; vertical-align: baseline; }
 .count-up[data-rolling] .counter-wheels { display: inline-flex; }

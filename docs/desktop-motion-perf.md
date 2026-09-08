@@ -14,7 +14,7 @@
 - Abertura usa véu (`.hero-soft-veil`) com opacity em vez de animar `filter` no media.
 - Hero pointer: rect cacheado + pointermove coalescido em RAF; `force3D` nos tweens.
 - Cards: tilt com RAF; reset de scroll só enquanto o card está em hover; perspectiva no MotionValue.
-- Cursor: magnet coalescido em um RAF; contexto de label sem walks repetidos desnecessários.
+- Cursor customizado removido; o site usa o cursor padrão do sistema.
 - Header: `data-hidden` via ref/atributo, sem re-render React no scroll.
 - ListingSequence: não reinicia entrada quando a identidade de `children` muda.
 - AdvisorStory: `force3D` + `fastScrollEnd` mantendo scrub por frase.

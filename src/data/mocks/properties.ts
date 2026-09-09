@@ -4,7 +4,7 @@ import { media } from "./media";
 
 // All prices are integer BRL cents. No real addresses, listings or contacts.
 const timestamp = "2026-09-01T12:00:00.000Z";
-const cardFocalPoints: Record<string, string> = { interior: "50% 25%", apartment: "50% 58%", courtyard: "50% 45%", loft: "75% 50%", terrace: "50% 55%", hero: "50% 60%" };
+const cardFocalPoints: Record<string, string> = { interior: "65% 0%", apartment: "48% 0%", courtyard: "50% 45%", loft: "80% 0%", terrace: "55% 0%", hero: "50% 60%" };
 type PropertyInput = Pick<Property, "id" | "reference" | "slug" | "title" | "excerpt" | "type" | "purpose" | "price" | "neighborhood" | "areaId" | "area" | "bedrooms" | "suites" | "bathrooms" | "parking"> & Partial<Property> & { cover: ImageAsset };
 
 function property({ cover, ...input }: PropertyInput): Property {

@@ -1,0 +1,50 @@
+.selection { min-width: 0; }
+.stage { display: grid; }
+.property { grid-area: 1 / 1; display: grid; grid-template-columns: minmax(0, 7fr) minmax(260px, 3fr); min-width: 0; gap: clamp(28px, 4vw, 76px); visibility: hidden; pointer-events: none; }
+.property[data-active="true"] { visibility: visible; pointer-events: auto; }
+.image { display: block; position: relative; width: 100%; min-height: 610px; height: min(76svh, 850px); align-self: start; overflow: hidden; background: var(--paper); text-align: left; }
+.image img { object-fit: cover; transition: transform 350ms cubic-bezier(.22,1,.36,1); }
+.image:focus-visible { outline-offset: -7px; }
+.imageAction { position: absolute; left: 28px; bottom: 28px; padding: 14px 18px; background: var(--ivory); color: var(--ink); display: flex; gap: 36px; font-size: 12px; }
+.details { align-self: stretch; display: flex; flex-direction: column; padding-block: 12px 0; }
+.index { font-size: 14px; font-variant-numeric: tabular-nums; margin-bottom: clamp(36px, 5vw, 80px); }
+.index span { color: var(--muted); font-size: 11px; margin-left: 10px; }
+.details h3 { font-size: clamp(38px, 3.8vw, 70px); line-height: 1.04; }
+.location { font-size: 12px; line-height: 1.8; margin-top: 22px; color: var(--muted); }
+.location span { display: block; }
+.facts { display: flex; flex-wrap: wrap; gap: 20px 26px; margin-block: 38px; }
+.facts dt { font-size: 10px; color: var(--muted); margin-bottom: 10px; }
+.facts dd { font-family: var(--font-interface), sans-serif; font-size: 25px; font-variant-numeric: tabular-nums; letter-spacing: -.035em; }
+.facts dd span { font-size: 12px; }
+.phrase { font-family: var(--font-editorial), Georgia, serif; font-size: clamp(25px, 2.2vw, 38px); line-height: 1.25; max-width: 18ch; margin-bottom: 30px; }
+.details .explore { margin-top: auto; width: 100%; font-size: 12px; }
+.navigation { display: flex; flex-wrap: wrap; gap: 0 40px; margin-top: 34px; border-top: 1px solid var(--line); }
+.navigation button { display: flex; align-items: center; gap: 18px; min-height: 70px; padding-block: 16px; text-align: left; font-size: 13px; color: var(--muted); border-bottom: 1px solid transparent; }
+.navigation button > span:first-child { font-size: 10px; font-variant-numeric: tabular-nums; }
+.navigation button > span:last-child { opacity: 0; transform: translate(-3px, 3px); transition: opacity 180ms, transform 180ms; }
+.navigation button[aria-pressed="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+.navigation button[aria-pressed="true"] > span:last-child { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: no-preference) and (min-width: 900px) {
+  .property[data-active="true"] .image img { animation: imageArrival 280ms ease-out; }
+  .property[data-active="true"] .details { animation: detailsArrival 220ms ease-out; }
+  @keyframes imageArrival { from { opacity: .55; transform: scale(1.012); } to { opacity: 1; transform: scale(1); } }
+  @keyframes detailsArrival { from { opacity: .5; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) { .image:hover img { transform: scale(1.018); } }
+@media (max-width: 899px) {
+  .stage { display: block; }
+  .property { display: block; visibility: visible; pointer-events: auto; margin-bottom: 76px; }
+  .property:last-child { margin-bottom: 0; }
+  .image { width: calc(100% + 2 * var(--space-gutter)); margin-inline: calc(-1 * var(--space-gutter)); height: 67svh; min-height: 380px; max-height: 780px; }
+  .imageAction { left: var(--space-gutter); bottom: 22px; }
+  .details { padding-top: 26px; }
+  .index { margin-bottom: 22px; font-size: 12px; }
+  .details h3 { font-size: clamp(40px, 10vw, 66px); max-width: 14ch; }
+  .location { margin-top: 14px; font-size: 13px; }
+  .location span { display: inline; }
+  .facts { margin-block: 26px; gap: 32px; }
+  .phrase { font-size: 29px; margin-bottom: 18px; }
+  .details .explore { margin-top: 6px; }
+  .navigation { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .image img, .navigation button > span:last-child { transition: none; } }

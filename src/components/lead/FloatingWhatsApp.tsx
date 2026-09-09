@@ -16,7 +16,7 @@ export function FloatingWhatsApp() {
       if (link.current) link.current.dataset.inlineContact = String(query.matches && visible.size > 0);
     }, { threshold: .5 });
     // Give visible in-page contact actions their space; retain the floating entry between them.
-    document.querySelectorAll('.advisor-editorial-signoff, .showroom-owner-copy .solid-button, .showroom-private-copy, .footer-top').forEach(node => observer.observe(node));
+    document.querySelectorAll('#selecao article .text-link, .advisor-editorial-signoff, .showroom-owner-copy .solid-button, .showroom-private-copy, .footer-top').forEach(node => observer.observe(node));
     const sync = () => { if (link.current) link.current.dataset.inlineContact = String(query.matches && visible.size > 0); };
     query.addEventListener("change", sync);
     return () => { observer.disconnect(); query.removeEventListener("change", sync); };

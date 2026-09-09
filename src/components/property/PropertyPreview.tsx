@@ -9,7 +9,7 @@ import type { Property } from "@/types/property";
 
 const loadContent = () => import("./PropertyPreviewContent").then(module => module.PropertyPreviewContent);
 const PreviewContent = dynamic(loadContent, {
-  loading: () => <div className="property-preview-loading"><div className="dialog-image" /><p className="dialog-inner" role="status">Carregando o imóvel…</p></div>,
+  loading: () => <div className="property-preview-loading"><div className="presentation-hero" /><p className="presentation-rail" role="status">Carregando o imóvel…</p></div>,
 });
 
 export function PropertyPreview({ property, children, className = "text-link", whatsapp = null, showArrow = true }: { property: Property; children: ReactNode; className?: string; whatsapp?: string | null; showArrow?: boolean }) {
@@ -31,6 +31,6 @@ export function PropertyPreview({ property, children, className = "text-link", w
     <button ref={trigger} type="button" className={className} onPointerEnter={warm} onPointerDown={warm} onFocus={warm} onClick={() => setOpen(true)} aria-label={`Conhecer ${property.name}`} aria-haspopup="dialog" aria-expanded={open}>
       {children}{showArrow ? <ArrowUpRight size={16} aria-hidden="true" /> : null}{className.includes("text-link") ? <DrawUnderline /> : null}
     </button>
-    {open ? <Dialog title={property.name} open onClose={() => setOpen(false)}><PreviewContent property={property} whatsapp={whatsapp} /></Dialog> : null}
+    {open ? <Dialog className="property-presentation" title={property.name} open onClose={() => setOpen(false)}><PreviewContent property={property} whatsapp={whatsapp} /></Dialog> : null}
   </>;
 }

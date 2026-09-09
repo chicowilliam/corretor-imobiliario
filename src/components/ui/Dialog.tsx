@@ -3,7 +3,7 @@
 import { useLayoutEffect, useId, useRef, type ReactNode } from "react";
 import { X } from "lucide-react";
 
-export function Dialog({ open, onClose, title, children }: { open: boolean; onClose: () => void; title: string; children: ReactNode }) {
+export function Dialog({ open, onClose, title, children, className = "" }: { open: boolean; onClose: () => void; title: string; children: ReactNode; className?: string }) {
   const ref = useRef<HTMLDialogElement>(null);
   const titleId = useId();
   const animation = useRef<Animation | null>(null);
@@ -32,7 +32,7 @@ export function Dialog({ open, onClose, title, children }: { open: boolean; onCl
   }, [open]);
 
   return (
-    <dialog ref={ref} className="dialog" aria-labelledby={titleId} onCancel={event => { event.preventDefault(); dismiss(); }} onClick={(event) => {
+    <dialog ref={ref} className={`dialog ${className}`} aria-labelledby={titleId} onCancel={event => { event.preventDefault(); dismiss(); }} onClick={(event) => {
       if (event.target !== event.currentTarget) return;
       const box = event.currentTarget.getBoundingClientRect();
       if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) dismiss();

@@ -1,10 +1,11 @@
 /* Spatial composition is scoped to the Home; catalog controls retain their layout. */
 .spatial-showroom { --space-scene: clamp(72px, 9vw, 172px); --space-gutter: clamp(22px, 5vw, 96px); }
-.spatial-showroom .hero-content { justify-content: flex-end; padding-bottom: clamp(110px, 16svh, 180px); }
-.spatial-showroom .hero-title { font-size: clamp(72px, 9.4vw, 180px); line-height: .94; font-weight: 500; letter-spacing: -.055em; max-width: 1200px; margin-block: 24px; }
+.spatial-showroom .hero-content { justify-content: center; padding-top: 120px; padding-bottom: 180px; }
+.spatial-showroom .hero-title { font-size: clamp(64px, min(8.8vw, 16svh), 160px); line-height: .94; font-weight: 500; letter-spacing: -.055em; max-width: 1200px; margin-block: 24px; flex-shrink: 0; }
 .spatial-showroom .hero-eyebrow { font-size: 12px; letter-spacing: .02em; }
-.spatial-showroom .hero-copy { margin-left: 53%; max-width: 33ch; font-size: 14px; }
-.spatial-showroom .hero-cta-mask { margin-left: 53%; }
+.spatial-showroom .hero-copy { position: absolute; right: var(--gutter); bottom: 135px; margin-left: 0; width: 30ch; max-width: 33ch; font-size: 14px; }
+.spatial-showroom .hero-cta-mask { position: absolute; right: var(--gutter); bottom: 78px; margin-left: 0; width: 30ch; }
+.spatial-showroom .hero-cta-mask .text-link { background: var(--ivory); color: var(--ink); padding: 14px 20px; min-height: 48px; border: 0; font-size: 12px; }
 .spatial-showroom .hero-shade { background: linear-gradient(180deg, rgb(20 23 19 / .3), transparent 30%, rgb(20 23 19 / .68)); }
 .spatial-showroom .search-shell { background: var(--ivory); }
 .showroom-feature { padding-top: var(--space-scene); }
@@ -24,9 +25,10 @@
 .showroom-description { font-size: 14px; line-height: 1.9; color: var(--muted); }
 .showroom-feature-specs .property-facts { margin-top: 0; border-top: 0; padding-top: 0; }
 .showroom-feature-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-top: 28px; }
-.spatial-showroom .selected-section { background: var(--paper); padding-block: var(--space-scene); }
+.spatial-showroom .selected-section { background: var(--paper); padding-block: 36px 64px; }
 .spatial-showroom .selected-section > .shell { max-width: 1920px; padding-inline: var(--space-gutter); }
-.spatial-showroom .selected-section .section-title { font-size: clamp(52px, 6vw, 110px); }
+.spatial-showroom .selected-section .section-title { font-size: clamp(40px, 3.6vw, 64px); }
+.spatial-showroom .selected-section .mb-12 { margin-bottom: 28px; }
 .spatial-showroom .selected-section .editorial-listings { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 68px clamp(28px, 5vw, 96px); margin: 0; padding: 16px 0 0; }
 .spatial-showroom .selected-section .property-image { aspect-ratio: 5 / 4; }
 .spatial-showroom .selected-section .property-card-title { font-size: clamp(30px, 3vw, 48px); margin: 24px 0 16px; }
@@ -117,11 +119,11 @@
   .showroom-owner-body { gap: 5vw; }
 }
 @media (max-width: 767px) {
-  .spatial-showroom .hero-content { padding-bottom: 120px; }
-  .spatial-showroom .hero-title { font-size: clamp(62px, 16vw, 112px); margin-block: 22px; }
+  .spatial-showroom .hero-content { padding-top: 110px; padding-bottom: 100px; }
+  .spatial-showroom .hero-title { font-size: clamp(48px, min(16vw, 11svh), 92px); margin-block: 22px; }
   .spatial-showroom .hero-eyebrow { font-size: 10px; }
-  .spatial-showroom .hero-copy { margin-left: 0; font-size: 13px; max-width: 29ch; }
-  .spatial-showroom .hero-cta-mask { margin-left: -8px; }
+  .spatial-showroom .hero-copy { position: static; margin-left: 0; font-size: 13px; max-width: 29ch; }
+  .spatial-showroom .hero-cta-mask { position: static; margin-left: -8px; width: auto; }
   .showroom-feature-intro { grid-template-columns: 1fr; gap: 20px; padding-bottom: 36px; }
   .showroom-feature-intro h2 { font-size: clamp(54px, 14vw, 90px); }
   .showroom-feature-intro p { max-width: none; }
@@ -133,7 +135,7 @@
   .showroom-feature-details { grid-template-columns: 1fr; padding-top: 20px; gap: 28px; }
   .showroom-feature-details h3 { font-size: 46px; max-width: 13ch; }
   .showroom-feature-specs { grid-column: auto; }
-  .spatial-showroom .selected-section .section-title { font-size: clamp(48px, 12vw, 68px); }
+  .spatial-showroom .selected-section .section-title { font-size: clamp(38px, 10vw, 58px); }
   .spatial-showroom .selected-section .editorial-listings { grid-auto-flow: row; grid-template-columns: 1fr; grid-auto-columns: auto; overflow: visible; gap: 52px; }
   .spatial-showroom .selected-section .property-card .property-image { aspect-ratio: 4 / 5; }
   .spatial-showroom .selected-section .property-card:last-child:nth-child(odd):not(:first-child) .property-card-depth { display: block; }

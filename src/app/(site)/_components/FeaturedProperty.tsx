@@ -2,22 +2,24 @@ import Image from "next/image";
 import type { Property } from "@/types/property";
 import { Reveal } from "@/components/motion/Reveal";
 import { PropertyPreview } from "@/components/property/PropertyPreview";
+import { ContactCTA } from "@/components/lead/ContactCTA";
 import { propertyPrice } from "@/lib/utils/format-money";
 import { PropertyFacts } from "@/components/property/PropertyFacts";
 
 export function FeaturedProperty({ property, whatsapp }: { property: Property; whatsapp: string | null }) {
-  return <section className="shell section-space" aria-labelledby="featured-heading"><Reveal>
-    <div className="feature-intro"><h2 id="featured-heading" className="display section-title">Uma visita a<br />{property.neighborhood}.</h2><p className="section-heading-note">Uma casa da seleção, vista de perto.<br />Arquitetura, espaços e o entorno.</p></div>
-    <div className="feature-layout">
-      <div className="feature-photo"><Image src={property.media.cover.src} alt={property.media.cover.alt} fill loading="lazy" sizes="(max-width: 767px) 100vw, 57vw" style={{ objectPosition: property.media.card?.objectPosition }} />{property.highlights.includes("EXCLUSIVE") ? <span className="property-badge">Exclusividade</span> : null}</div>
-      <div className="feature-copy">
-        <div className="feature-register"><span>{property.city}</span><span>Ref. {property.reference}</span></div>
-        <h3 className="display mt-5 text-[44px] lg:text-[54px]">{property.title}</h3>
-        <p className="mt-5 max-w-80 text-[13px] leading-7 text-muted">{property.excerpt}</p>
-        <PropertyFacts property={property} />
-        <p className="property-price mt-7">{propertyPrice(property)}</p>
-        <PropertyPreview property={property} whatsapp={whatsapp} className="text-link mt-6">Conhecer esta casa</PropertyPreview>
-      </div>
+  return <section className="showroom-feature" aria-labelledby="featured-heading">
+    <Reveal className="showroom-feature-intro"><p>Uma casa da seleção, vista de perto.</p><h2 id="featured-heading" className="display">Uma visita a<br />{property.neighborhood}.</h2><p>Arquitetura, espaços<br />e o entorno.</p></Reveal>
+    <div className="showroom-feature-stage">
+      <PropertyPreview property={property} whatsapp={whatsapp} className="showroom-feature-image" showArrow={false}>
+        <Image src={property.media.cover.src} alt={property.media.cover.alt} fill loading="lazy" sizes="100vw" style={{ objectPosition: property.media.card?.objectPosition }} />
+        <span className="showroom-image-entry">Ver imóvel <span aria-hidden="true">↗</span></span>
+      </PropertyPreview>
+      <div className="showroom-feature-caption"><span>{property.city} / {property.neighborhood}</span><span>{property.highlights.includes("EXCLUSIVE") ? "Exclusividade · " : ""}Ref. {property.reference}</span></div>
     </div>
-  </Reveal></section>;
+    <div className="showroom-feature-details">
+      <div><p className="showroom-property-name">{property.name}</p><h3 className="display">{property.title}</h3></div>
+      <p className="showroom-description">{property.excerpt}</p>
+      <div className="showroom-feature-specs"><PropertyFacts property={property} /><div className="showroom-feature-actions"><p className="property-price">{propertyPrice(property)}</p><ContactCTA whatsapp={whatsapp} title="Receber detalhes" message={`Olá, Tomás! Gostaria de receber detalhes de ${property.name}, referência ${property.reference}, em ${property.neighborhood}.`}>Receber detalhes</ContactCTA></div></div>
+    </div>
+  </section>;
 }

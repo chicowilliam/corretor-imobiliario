@@ -21,5 +21,6 @@ export function PropertyCard({ property, whatsapp, imageSizes }: { property: Pro
     <p className="property-editorial-title">{property.title}</p>
     <PropertyFacts property={property} />
     <div className="property-card-footer"><p className="property-price">{propertyPrice(property)}</p><span className="property-reference">Ref. {property.reference}</span></div>
+    <PropertyPreview property={property} whatsapp={whatsapp} className="text-link property-card-entry">Ver imóvel</PropertyPreview>
   </PropertyCardMotion>;
 }

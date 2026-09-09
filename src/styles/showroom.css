@@ -3,8 +3,8 @@
 .spatial-showroom .hero-content { justify-content: center; padding-top: 120px; padding-bottom: 180px; }
 .spatial-showroom .hero-title { font-size: clamp(64px, min(8.8vw, 16svh), 160px); line-height: .94; font-weight: 500; letter-spacing: -.055em; max-width: 1200px; margin-block: 24px; flex-shrink: 0; }
 .spatial-showroom .hero-eyebrow { font-size: 12px; letter-spacing: .02em; }
-.spatial-showroom .hero-copy { position: absolute; right: var(--gutter); bottom: 135px; margin-left: 0; width: 30ch; max-width: 33ch; font-size: 14px; }
-.spatial-showroom .hero-cta-mask { position: absolute; right: var(--gutter); bottom: 78px; margin-left: 0; width: 30ch; }
+.spatial-showroom .hero-copy { position: absolute; right: var(--gutter); bottom: 165px; margin-left: 0; width: 30ch; max-width: 33ch; font-size: 14px; }
+.spatial-showroom .hero-cta-mask { position: absolute; right: var(--gutter); bottom: 108px; margin-left: 0; width: 30ch; }
 .spatial-showroom .hero-cta-mask .text-link { background: var(--ivory); color: var(--ink); padding: 14px 20px; min-height: 48px; border: 0; font-size: 12px; }
 .spatial-showroom .hero-shade { background: linear-gradient(180deg, rgb(20 23 19 / .3), transparent 30%, rgb(20 23 19 / .68)); }
 .spatial-showroom .search-shell { background: var(--ivory); }

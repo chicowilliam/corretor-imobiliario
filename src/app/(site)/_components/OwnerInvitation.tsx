@@ -3,15 +3,19 @@ import { Reveal } from "@/components/motion/Reveal";
 import { ContactCTA } from "@/components/lead/ContactCTA";
 import type { ImageAsset } from "@/types/shared";
 
+const steps = [
+  ["Curadoria", "Entender o que torna seu imóvel particular."],
+  ["Posicionamento", "Definir seu lugar no mercado."],
+  ["Apresentação", "Dar à arquitetura a atenção que merece."],
+  ["Compradores adequados", "Conectar o endereço à pessoa certa."],
+];
+
 export function OwnerInvitation({ image, whatsapp }: { image: ImageAsset; whatsapp: string | null }) {
-  return <section id="proprietarios" className="owner-section" aria-labelledby="owner-heading">
-    <div className="owner-layout">
-      <Reveal className="owner-copy"><h2 id="owner-heading" className="display section-title">Seu imóvel merece<br />um olhar à altura.</h2>
-        <p className="mt-6 max-w-sm text-[13px] leading-7 text-muted">A orientação da luz, a relação com a rua, o jardim que cresceu com a casa. Antes de apresentar um imóvel em Belo Horizonte, é preciso entender o que faz dele um lugar particular.</p>
-        <ContactCTA className="text-link mt-6" whatsapp={whatsapp} title="Conte a história do seu imóvel" message="Olá, Tomás! Sou proprietário e gostaria de conversar sobre a apresentação e o valor do meu imóvel em Belo Horizonte ou região.">Conversar sobre meu imóvel</ContactCTA>
-        <p className="mt-4 text-[10px] text-muted">Uma primeira conversa, sem compromisso.</p>
-      </Reveal>
-      <figure className="owner-art"><Image src={image.src} alt={image.alt} fill loading="lazy" sizes="(max-width: 767px) 100vw, 54vw" /><figcaption>O valor começa no olhar.</figcaption></figure>
+  return <section id="proprietarios" className="showroom-owner" aria-labelledby="owner-heading">
+    <div className="showroom-owner-heading"><p>Para quem tem um imóvel especial</p><Reveal><h2 id="owner-heading" className="display">Seu imóvel.<br /><span>Um olhar à altura.</span></h2></Reveal></div>
+    <div className="showroom-owner-body">
+      <figure className="showroom-owner-image"><Image src={image.src} alt={image.alt} fill loading="lazy" sizes="(max-width: 767px) 100vw, 58vw" /><figcaption>O valor começa no olhar.</figcaption></figure>
+      <div className="showroom-owner-copy"><p>A orientação da luz, a relação com a rua, o jardim que cresceu com a casa. Antes de apresentar um imóvel em Belo Horizonte, é preciso entender o que faz dele um lugar particular.</p><ol className="showroom-process">{steps.map(([title, description]) => <li key={title}><h3>{title}</h3><p>{description}</p></li>)}</ol><ContactCTA className="solid-button" whatsapp={whatsapp} title="Apresentar meu imóvel" message="Olá, Tomás! Sou proprietário e gostaria de conversar sobre a apresentação e o valor do meu imóvel em Belo Horizonte ou região.">Apresentar meu imóvel</ContactCTA><p className="showroom-note">Uma primeira conversa, sem compromisso.</p></div>
     </div>
   </section>;
 }

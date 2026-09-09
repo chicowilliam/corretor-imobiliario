@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useId, useState, useSyncExternalStore } from "react";
 import { PropertyPreview } from "@/components/property/PropertyPreview";
+import { ContactCTA } from "@/components/lead/ContactCTA";
+import { propertyPrice } from "@/lib/utils/format-money";
 import type { Property } from "@/types/property";
 import styles from "./CuratedSelection.module.css";
 
@@ -30,6 +32,7 @@ export function CuratedSelection({ properties, whatsapp }: { properties: Propert
           <p className={styles.index}>{number(index + 1)} <span>/ {number(properties.length)}</span></p>
           <h3 className="display">{property.name}</h3>
           <p className={styles.location}>{property.neighborhood}<span> · {property.city}</span></p>
+          <p className={styles.price}><span>{property.purpose === "RENT" ? "Locação" : "À venda"}</span>{propertyPrice(property)}</p>
           <dl className={styles.facts}>
             <div><dt>Metragem</dt><dd>{property.area.toLocaleString("pt-BR")} <span>m²</span></dd></div>
             <div><dt>Quartos</dt><dd>{property.bedrooms ?? "—"}</dd></div>
@@ -37,6 +40,7 @@ export function CuratedSelection({ properties, whatsapp }: { properties: Propert
           </dl>
           <p className={styles.phrase}>{property.title}</p>
           <PropertyPreview property={property} whatsapp={whatsapp} className={`text-link ${styles.explore}`}>Explorar imóvel</PropertyPreview>
+          <ContactCTA className={`text-link ${styles.contact}`} whatsapp={whatsapp} title="Receber detalhes do imóvel" message={`Olá, Tomás! Gostaria de receber detalhes de ${property.name} (${property.reference}), em ${property.neighborhood}, e conversar sobre uma visita.`}>Receber detalhes</ContactCTA>
         </div>
       </article>)}
     </div>
